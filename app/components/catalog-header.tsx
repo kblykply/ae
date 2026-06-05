@@ -24,6 +24,24 @@ export function CatalogHeader() {
       </nav>
 
       <div className="header-actions">
+        <label className="language-select">
+          <span className="sr-only">Dil seçimi</span>
+          <select aria-label="Dil seçimi" defaultValue="tr">
+            <option value="en">English</option>
+            <option value="tr">Türkçe</option>
+          </select>
+        </label>
+        <form className="search-pill">
+          <label className="sr-only" htmlFor="catalog-search">
+            Ürün ara
+          </label>
+          <span aria-hidden="true" className="search-icon" />
+          <input
+            id="catalog-search"
+            placeholder="SPC panel ara"
+            type="search"
+          />
+        </form>
         <Link className="header-contact" href="/#contact">
           İletişim
         </Link>
