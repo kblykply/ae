@@ -19,6 +19,8 @@ export function SiteFooter() {
         >
           SPC Duvar Panelleri
         </a>
+        <Link href="/vision">Vision</Link>
+        <Link href="/mission">Mission</Link>
         <Link href="/privacy-policy">Privacy Policy</Link>
         <Link href="/terms-and-conditions">Terms & Conditions</Link>
       </div>

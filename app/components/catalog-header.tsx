@@ -17,6 +17,8 @@ export function CatalogHeader() {
       <nav className="desktop-nav" aria-label="Catalog navigation">
         <Link href="/category/spc-parke">SPC Parke</Link>
         <Link href="/category/spc-duvar-panelleri">Duvar Panelleri</Link>
+        <Link href="/vision">Vizyon</Link>
+        <Link href="/mission">Misyon</Link>
         <Link href="/#projects">Projeler</Link>
         <Link href="/#contact">İletişim</Link>
       </nav>

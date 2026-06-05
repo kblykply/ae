@@ -122,7 +122,14 @@ const translations = {
     brandHome: "Adem Eren Decoration home",
     logoAlt: "AE Dekorasyon logo",
     navLabel: "Primary navigation",
-    nav: ["SPC Floors", "Wall Panels", "Projects", "Contact"],
+    nav: [
+      "SPC Floors",
+      "Wall Panels",
+      "Vision",
+      "Mission",
+      "Projects",
+      "Contact",
+    ],
     languageLabel: "Language",
     searchLabel: "Search products",
     searchPlaceholder: "Search SPC finishes",
@@ -185,7 +192,14 @@ const translations = {
     brandHome: "Adem Eren Decoration ana sayfa",
     logoAlt: "AE Dekorasyon logosu",
     navLabel: "Ana navigasyon",
-    nav: ["SPC Parkeler", "Duvar Panelleri", "Projeler", "İletişim"],
+    nav: [
+      "SPC Parkeler",
+      "Duvar Panelleri",
+      "Vizyon",
+      "Misyon",
+      "Projeler",
+      "İletişim",
+    ],
     languageLabel: "Dil seçimi",
     searchLabel: "Ürün ara",
     searchPlaceholder: "SPC panel ara",
@@ -281,8 +295,10 @@ export default function Home() {
           <nav className="desktop-nav" aria-label={copy.navLabel}>
             <Link href="/category/spc-parke">{copy.nav[0]}</Link>
             <Link href="/category/spc-duvar-panelleri">{copy.nav[1]}</Link>
-            <a href="#projects">{copy.nav[2]}</a>
-            <a href="#contact">{copy.nav[3]}</a>
+            <Link href="/vision">{copy.nav[2]}</Link>
+            <Link href="/mission">{copy.nav[3]}</Link>
+            <a href="#projects">{copy.nav[4]}</a>
+            <a href="#contact">{copy.nav[5]}</a>
           </nav>
 
           <div className="header-actions">
