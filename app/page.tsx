@@ -131,6 +131,8 @@ const translations = {
       "Contact",
     ],
     languageLabel: "Language",
+    closeMenuLabel: "Close menu",
+    menuLabel: "Open menu",
     searchLabel: "Search products",
     searchPlaceholder: "Search SPC finishes",
     clearSearch: "Clear search",
@@ -201,6 +203,8 @@ const translations = {
       "İletişim",
     ],
     languageLabel: "Dil seçimi",
+    closeMenuLabel: "Menüyü kapat",
+    menuLabel: "Menüyü aç",
     searchLabel: "Ürün ara",
     searchPlaceholder: "SPC panel ara",
     clearSearch: "Aramayı temizle",
@@ -263,6 +267,7 @@ const translations = {
 export default function Home() {
   const [activeSlide, setActiveSlide] = useState(0);
   const [language, setLanguage] = useState<Language>("en");
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const currentSlide = heroSlides[activeSlide];
   const copy = translations[language];
 
@@ -291,6 +296,21 @@ export default function Home() {
               width={430}
             />
           </a>
+
+          <button
+            aria-controls="home-mobile-menu"
+            aria-expanded={mobileMenuOpen}
+            aria-label={
+              mobileMenuOpen ? copy.closeMenuLabel : copy.menuLabel
+            }
+            className="mobile-menu-toggle"
+            onClick={() => setMobileMenuOpen((current) => !current)}
+            type="button"
+          >
+            <span />
+            <span />
+            <span />
+          </button>
 
           <nav className="desktop-nav" aria-label={copy.navLabel}>
             <Link href="/category/spc-parke">{copy.nav[0]}</Link>
@@ -346,6 +366,85 @@ export default function Home() {
             >
               {copy.headerContact}
             </a>
+          </div>
+
+          <div
+            className={`mobile-menu-panel${mobileMenuOpen ? " is-open" : ""}`}
+            id="home-mobile-menu"
+          >
+            <nav className="mobile-menu-nav" aria-label={copy.navLabel}>
+              <Link
+                href="/category/spc-parke"
+                onClick={() => setMobileMenuOpen(false)}
+              >
+                {copy.nav[0]}
+              </Link>
+              <Link
+                href="/category/spc-duvar-panelleri"
+                onClick={() => setMobileMenuOpen(false)}
+              >
+                {copy.nav[1]}
+              </Link>
+              <Link href="/vision" onClick={() => setMobileMenuOpen(false)}>
+                {copy.nav[2]}
+              </Link>
+              <Link href="/mission" onClick={() => setMobileMenuOpen(false)}>
+                {copy.nav[3]}
+              </Link>
+              <a href="#projects" onClick={() => setMobileMenuOpen(false)}>
+                {copy.nav[4]}
+              </a>
+              <a href="#contact" onClick={() => setMobileMenuOpen(false)}>
+                {copy.nav[5]}
+              </a>
+            </nav>
+
+            <div className="mobile-menu-actions">
+              <label className="language-select">
+                <span className="sr-only">{copy.languageLabel}</span>
+                <select
+                  aria-label={copy.languageLabel}
+                  onChange={(event) =>
+                    setLanguage(event.target.value as Language)
+                  }
+                  value={language}
+                >
+                  <option value="en">English</option>
+                  <option value="tr">Türkçe</option>
+                </select>
+              </label>
+              <form
+                action="/search"
+                aria-label={copy.searchLabel}
+                className="search-pill"
+                method="get"
+                role="search"
+              >
+                <label className="sr-only" htmlFor="site-mobile-search">
+                  {copy.searchLabel}
+                </label>
+                <button
+                  aria-label={copy.searchLabel}
+                  className="search-submit"
+                  type="submit"
+                >
+                  <span aria-hidden="true" className="search-icon" />
+                </button>
+                <input
+                  id="site-mobile-search"
+                  name="q"
+                  placeholder={copy.searchPlaceholder}
+                  type="search"
+                />
+              </form>
+              <a
+                className="header-contact"
+                href="#contact"
+                onClick={() => setMobileMenuOpen(false)}
+              >
+                {copy.headerContact}
+              </a>
+            </div>
           </div>
         </header>
 

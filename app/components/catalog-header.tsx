@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import Link from "next/link";
+import { useState } from "react";
 
 type Language = "en" | "tr";
 
@@ -15,6 +16,8 @@ const headerCopy = {
     ariaHome: "AE Decoration home",
     ariaNav: "Catalog navigation",
     languageLabel: "Language",
+    closeMenuLabel: "Close menu",
+    menuLabel: "Open menu",
     nav: ["SPC Floors", "Wall Panels", "Vision", "Mission", "Projects", "Contact"],
     searchLabel: "Search products",
     searchPlaceholder: "Search SPC finishes",
@@ -23,6 +26,8 @@ const headerCopy = {
     ariaHome: "AE Dekorasyon ana sayfa",
     ariaNav: "Katalog navigasyonu",
     languageLabel: "Dil seçimi",
+    closeMenuLabel: "Menüyü kapat",
+    menuLabel: "Menüyü aç",
     nav: ["SPC Parke", "Duvar Panelleri", "Vizyon", "Misyon", "Projeler", "İletişim"],
     searchLabel: "Ürün ara",
     searchPlaceholder: "SPC panel ara",
@@ -34,6 +39,7 @@ export function CatalogHeader({
   onLanguageChange,
 }: CatalogHeaderProps) {
   const copy = headerCopy[language];
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   return (
     <header className="site-header catalog-page-header">
@@ -46,6 +52,19 @@ export function CatalogHeader({
           width={430}
         />
       </Link>
+
+      <button
+        aria-controls="catalog-mobile-menu"
+        aria-expanded={mobileMenuOpen}
+        aria-label={mobileMenuOpen ? copy.closeMenuLabel : copy.menuLabel}
+        className="mobile-menu-toggle"
+        onClick={() => setMobileMenuOpen((current) => !current)}
+        type="button"
+      >
+        <span />
+        <span />
+        <span />
+      </button>
 
       <nav className="desktop-nav" aria-label={copy.ariaNav}>
         <Link href="/category/spc-parke">{copy.nav[0]}</Link>
@@ -98,6 +117,83 @@ export function CatalogHeader({
         <Link className="header-contact" href="/#contact">
           {copy.nav[5]}
         </Link>
+      </div>
+
+      <div
+        className={`mobile-menu-panel${mobileMenuOpen ? " is-open" : ""}`}
+        id="catalog-mobile-menu"
+      >
+        <nav className="mobile-menu-nav" aria-label={copy.ariaNav}>
+          <Link href="/category/spc-parke" onClick={() => setMobileMenuOpen(false)}>
+            {copy.nav[0]}
+          </Link>
+          <Link
+            href="/category/spc-duvar-panelleri"
+            onClick={() => setMobileMenuOpen(false)}
+          >
+            {copy.nav[1]}
+          </Link>
+          <Link href="/vision" onClick={() => setMobileMenuOpen(false)}>
+            {copy.nav[2]}
+          </Link>
+          <Link href="/mission" onClick={() => setMobileMenuOpen(false)}>
+            {copy.nav[3]}
+          </Link>
+          <Link href="/#projects" onClick={() => setMobileMenuOpen(false)}>
+            {copy.nav[4]}
+          </Link>
+          <Link href="/#contact" onClick={() => setMobileMenuOpen(false)}>
+            {copy.nav[5]}
+          </Link>
+        </nav>
+
+        <div className="mobile-menu-actions">
+          <label className="language-select">
+            <span className="sr-only">{copy.languageLabel}</span>
+            <select
+              aria-label={copy.languageLabel}
+              defaultValue={onLanguageChange ? undefined : language}
+              onChange={(event) =>
+                onLanguageChange?.(event.target.value as Language)
+              }
+              value={onLanguageChange ? language : undefined}
+            >
+              <option value="en">English</option>
+              <option value="tr">Türkçe</option>
+            </select>
+          </label>
+          <form
+            action="/search"
+            aria-label={copy.searchLabel}
+            className="search-pill"
+            method="get"
+            role="search"
+          >
+            <label className="sr-only" htmlFor="catalog-mobile-search">
+              {copy.searchLabel}
+            </label>
+            <button
+              aria-label={copy.searchLabel}
+              className="search-submit"
+              type="submit"
+            >
+              <span aria-hidden="true" className="search-icon" />
+            </button>
+            <input
+              id="catalog-mobile-search"
+              name="q"
+              placeholder={copy.searchPlaceholder}
+              type="search"
+            />
+          </form>
+          <Link
+            className="header-contact"
+            href="/#contact"
+            onClick={() => setMobileMenuOpen(false)}
+          >
+            {copy.nav[5]}
+          </Link>
+        </div>
       </div>
     </header>
   );
