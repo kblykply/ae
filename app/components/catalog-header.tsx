@@ -71,13 +71,26 @@ export function CatalogHeader({
             <option value="tr">Türkçe</option>
           </select>
         </label>
-        <form className="search-pill">
+        <form
+          action="/search"
+          aria-label={copy.searchLabel}
+          className="search-pill"
+          method="get"
+          role="search"
+        >
           <label className="sr-only" htmlFor="catalog-search">
             {copy.searchLabel}
           </label>
-          <span aria-hidden="true" className="search-icon" />
+          <button
+            aria-label={copy.searchLabel}
+            className="search-submit"
+            type="submit"
+          >
+            <span aria-hidden="true" className="search-icon" />
+          </button>
           <input
             id="catalog-search"
+            name="q"
             placeholder={copy.searchPlaceholder}
             type="search"
           />

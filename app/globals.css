@@ -219,6 +219,19 @@ img {
   color: rgba(255, 255, 255, 0.78);
 }
 
+.search-submit {
+  align-items: center;
+  background: transparent;
+  border: 0;
+  color: #ffffff;
+  cursor: pointer;
+  display: inline-flex;
+  height: 1.4rem;
+  justify-content: center;
+  padding: 0;
+  width: 1.4rem;
+}
+
 .header-contact {
   align-items: center;
   background: rgba(255, 255, 255, 0.18);
@@ -1486,6 +1499,157 @@ img {
   padding: 0 clamp(1rem, 4vw, 3rem) 4rem;
 }
 
+.search-hero {
+  background:
+    linear-gradient(115deg, rgba(32, 36, 47, 0.96), rgba(53, 83, 255, 0.72)),
+    #20242f;
+}
+
+.search-layout {
+  align-items: start;
+  display: grid;
+  gap: 1.5rem;
+  grid-template-columns: minmax(17rem, 23rem) minmax(0, 1fr);
+  margin: 4rem auto 0;
+  max-width: 113rem;
+  padding: 0 clamp(1rem, 4vw, 3rem) 4rem;
+}
+
+.search-filters {
+  background: #f7fbf6;
+  border: 1px solid #edf0ea;
+  border-radius: 1.2rem;
+  display: grid;
+  gap: 1rem;
+  padding: 1.1rem;
+  position: sticky;
+  top: 1rem;
+}
+
+.search-filters label {
+  color: #555963;
+  display: block;
+  font-size: 0.82rem;
+  font-weight: 950;
+  margin-bottom: 0.4rem;
+  text-transform: uppercase;
+}
+
+.search-filters input,
+.search-filters select {
+  background: #ffffff;
+  border: 1px solid #e3e6df;
+  border-radius: 0.85rem;
+  color: var(--ink);
+  min-height: 3rem;
+  outline: 0;
+  padding: 0 0.9rem;
+  width: 100%;
+}
+
+.search-filters input:focus,
+.search-filters select:focus {
+  border-color: var(--blue);
+  box-shadow: 0 0 0 3px rgba(53, 83, 255, 0.14);
+}
+
+.search-filter-actions {
+  display: grid;
+  gap: 0.6rem;
+  grid-template-columns: 1fr auto;
+}
+
+.search-filter-actions button,
+.search-filter-actions a {
+  align-items: center;
+  border-radius: 0.85rem;
+  display: inline-flex;
+  font-weight: 900;
+  justify-content: center;
+  min-height: 3rem;
+  padding: 0 1rem;
+  text-decoration: none;
+}
+
+.search-filter-actions button {
+  background: #20242f;
+  border: 0;
+  color: #ffffff;
+  cursor: pointer;
+}
+
+.search-filter-actions a {
+  background: #ffffff;
+  color: var(--ink);
+}
+
+.search-results {
+  display: grid;
+  gap: 1.2rem;
+  min-width: 0;
+}
+
+.search-summary {
+  align-items: end;
+  display: flex;
+  gap: 1rem;
+  justify-content: space-between;
+}
+
+.search-summary h2 {
+  color: var(--ink);
+  font-size: clamp(2rem, 4vw, 3rem);
+  font-weight: 950;
+  line-height: 1.08;
+  margin: 0;
+}
+
+.search-summary span {
+  background: var(--lime);
+  border-radius: 999px;
+  color: var(--ink);
+  font-size: 0.85rem;
+  font-weight: 950;
+  padding: 0.6rem 0.8rem;
+}
+
+.search-result-grid {
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+
+.empty-search {
+  background: #f7fbf6;
+  border: 1px solid #edf0ea;
+  border-radius: 1.2rem;
+  padding: clamp(1.2rem, 3vw, 2rem);
+}
+
+.empty-search h2 {
+  color: var(--ink);
+  font-size: clamp(1.6rem, 3vw, 2.2rem);
+  font-weight: 950;
+  margin: 0;
+}
+
+.empty-search p {
+  color: #555963;
+  font-weight: 700;
+  line-height: 1.55;
+  margin: 0.8rem 0 1.2rem;
+}
+
+.empty-search a {
+  align-items: center;
+  background: #20242f;
+  border-radius: 999px;
+  color: #ffffff;
+  display: inline-flex;
+  font-weight: 900;
+  min-height: 3rem;
+  padding: 0 1rem;
+  text-decoration: none;
+}
+
 .legal-shell {
   background: #ffffff;
 }
@@ -1691,6 +1855,18 @@ img {
   .product-detail-layout {
     grid-template-columns: 1fr;
   }
+
+  .search-layout {
+    grid-template-columns: 1fr;
+  }
+
+  .search-filters {
+    position: static;
+  }
+
+  .search-result-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
 }
 
 @media (max-width: 780px) {
@@ -1806,6 +1982,15 @@ img {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
+  .search-summary {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .search-result-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
   .showcase-image {
     min-height: 24rem;
   }
@@ -1858,6 +2043,11 @@ img {
   }
 
   .directory-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .search-filter-actions,
+  .search-result-grid {
     grid-template-columns: 1fr;
   }
 
