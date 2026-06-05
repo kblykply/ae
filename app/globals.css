@@ -2064,28 +2064,49 @@ img {
 
 @media (max-width: 780px) {
   .site-header {
+    align-items: center;
+    gap: 0.45rem 0.65rem;
+    grid-template-columns: auto minmax(0, 1fr);
     min-height: auto;
-    padding: 0.8rem;
+    padding: 0.7rem 0.8rem;
+  }
+
+  .brand {
+    order: 1;
   }
 
   .brand-logo {
-    width: min(9.4rem, 58vw);
+    width: min(5.6rem, 29vw);
   }
 
   .desktop-nav {
-    gap: 0.8rem;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.16);
+    gap: 0.72rem;
+    grid-column: 1 / -1;
+    max-width: 100%;
+    order: 3;
     overflow-x: auto;
-    padding-bottom: 0.2rem;
+    padding: 0.15rem 0 0.35rem;
+    scrollbar-width: none;
+    width: 100%;
+  }
+
+  .desktop-nav::-webkit-scrollbar {
+    display: none;
   }
 
   .desktop-nav a {
-    font-size: 0.82rem;
+    font-size: 0.78rem;
+    line-height: 1;
     white-space: nowrap;
   }
 
   .header-actions {
     align-items: center;
-    gap: 0.5rem;
+    gap: 0.42rem;
+    justify-content: flex-end;
+    justify-self: end;
+    order: 2;
   }
 
   .search-pill {
@@ -2094,9 +2115,32 @@ img {
     width: 100%;
   }
 
+  .language-select {
+    border-radius: 0.72rem;
+    min-height: 2.25rem;
+    min-width: 6.45rem;
+  }
+
+  .language-select::before {
+    left: 0.68rem;
+  }
+
+  .language-select::after {
+    right: 0.68rem;
+    top: 0.78rem;
+  }
+
+  .language-select select {
+    font-size: 0.72rem;
+    min-height: 2.25rem;
+    padding: 0 1.7rem 0 1.35rem;
+  }
+
   .header-contact {
-    min-height: 2.55rem;
-    padding-inline: 0.8rem;
+    border-radius: 0.72rem;
+    font-size: 0.74rem;
+    min-height: 2.25rem;
+    padding-inline: 0.72rem;
   }
 
   .hero-panel {
@@ -2114,7 +2158,7 @@ img {
 
   .hero-stage {
     min-height: 50rem;
-    padding: 11.5rem 1rem 7.5rem;
+    padding: 8.8rem 1rem 7.5rem;
   }
 
   .material-detail-card {
@@ -2225,7 +2269,7 @@ img {
   .catalog-hero-content,
   .product-detail-title,
   .legal-hero-content {
-    padding: 11.5rem 1rem 3rem;
+    padding: 8.8rem 1rem 3rem;
   }
 
   .catalog-hero-content h1,
@@ -2254,8 +2298,34 @@ img {
 }
 
 @media (max-width: 480px) {
+  .site-header {
+    gap: 0.42rem 0.5rem;
+    padding-inline: 0.65rem;
+  }
+
+  .brand-logo {
+    width: min(5rem, 27vw);
+  }
+
+  .desktop-nav {
+    gap: 0.64rem;
+  }
+
+  .desktop-nav a {
+    font-size: 0.76rem;
+  }
+
   .header-actions {
-    flex-wrap: wrap;
+    gap: 0.34rem;
+    flex-wrap: nowrap;
+  }
+
+  .language-select {
+    min-width: 6.15rem;
+  }
+
+  .header-contact {
+    padding-inline: 0.62rem;
   }
 
   .header-contact {
