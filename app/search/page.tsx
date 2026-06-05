@@ -156,11 +156,11 @@ export default async function SearchPage({ searchParams }: SearchPageProps) {
       : `${filteredProducts.length} results`;
 
   return (
-    <main className="site-shell">
+    <main className="site-shell search-page">
       <section className="catalog-hero search-hero">
         <CatalogHeader />
         <div className="catalog-hero-overlay" />
-        <div className="catalog-hero-content">
+        <div className="catalog-hero-content search-hero-content">
           <p className="eyebrow">Product search</p>
           <h1>Search SPC finishes</h1>
           <p>
@@ -170,9 +170,9 @@ export default async function SearchPage({ searchParams }: SearchPageProps) {
         </div>
       </section>
 
-      <section className="search-layout">
-        <form action="/search" className="search-filters" method="get">
-          <div>
+      <section className="catalog-search">
+        <form action="/search" className="catalog-search-panel" method="get">
+          <div className="catalog-search-field catalog-search-field-wide">
             <label htmlFor="search-query">Search term</label>
             <input
               defaultValue={query}
@@ -183,7 +183,7 @@ export default async function SearchPage({ searchParams }: SearchPageProps) {
             />
           </div>
 
-          <div>
+          <div className="catalog-search-field">
             <label htmlFor="search-category">Category</label>
             <select
               defaultValue={activeCategory}
@@ -199,7 +199,7 @@ export default async function SearchPage({ searchParams }: SearchPageProps) {
             </select>
           </div>
 
-          <div>
+          <div className="catalog-search-field">
             <label htmlFor="search-collection">Collection</label>
             <select
               defaultValue={activeCollection}
@@ -215,7 +215,7 @@ export default async function SearchPage({ searchParams }: SearchPageProps) {
             </select>
           </div>
 
-          <div>
+          <div className="catalog-search-field">
             <label htmlFor="search-sort">Sort</label>
             <select defaultValue={sort} id="search-sort" name="sort">
               <option value="relevance">Relevance</option>
@@ -224,14 +224,14 @@ export default async function SearchPage({ searchParams }: SearchPageProps) {
             </select>
           </div>
 
-          <div className="search-filter-actions">
+          <div className="catalog-search-actions">
             <button type="submit">Search</button>
             <Link href="/search">Clear</Link>
           </div>
         </form>
 
-        <div className="search-results">
-          <div className="search-summary">
+        <div className="catalog-search-results">
+          <div className="catalog-search-summary">
             <div>
               <p className="eyebrow">Catalog results</p>
               <h2>{summary}</h2>
@@ -240,14 +240,14 @@ export default async function SearchPage({ searchParams }: SearchPageProps) {
           </div>
 
           {filteredProducts.length > 0 ? (
-            <div className="directory-grid search-result-grid">
+            <div className="catalog-search-grid">
               {filteredProducts.map((product) => (
                 <Link
-                  className="directory-card"
+                  className="catalog-search-card"
                   href={`/products/${product.slug}`}
                   key={product.code}
                 >
-                  <span className="directory-card-image">
+                  <span className="catalog-search-card-image">
                     <Image
                       alt={`${product.name} ${product.code}`}
                       fill
@@ -255,7 +255,7 @@ export default async function SearchPage({ searchParams }: SearchPageProps) {
                       src={product.image}
                     />
                   </span>
-                  <span className="directory-card-body">
+                  <span className="catalog-search-card-body">
                     <small>{product.code}</small>
                     <strong>{product.name}</strong>
                     <span>{product.collection.tr}</span>
