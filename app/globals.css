@@ -1452,6 +1452,126 @@ img {
   padding: 0 clamp(1rem, 4vw, 3rem) 4rem;
 }
 
+.legal-shell {
+  background: #ffffff;
+}
+
+.legal-hero {
+  background:
+    linear-gradient(115deg, rgba(32, 36, 47, 0.96), rgba(53, 83, 255, 0.74)),
+    #20242f;
+  border-radius: 1.6rem;
+  isolation: isolate;
+  margin: 0 auto;
+  max-width: 118rem;
+  min-height: 31rem;
+  overflow: hidden;
+  position: relative;
+}
+
+.legal-hero::after {
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.1), transparent);
+  content: "";
+  inset: 0;
+  pointer-events: none;
+  position: absolute;
+  z-index: 1;
+}
+
+.legal-hero-content {
+  color: #ffffff;
+  max-width: 58rem;
+  padding: 10rem clamp(1.25rem, 5vw, 5rem) 4rem;
+  position: relative;
+  z-index: 2;
+}
+
+.legal-hero-content h1 {
+  color: #ffffff;
+  font-size: clamp(3rem, 7vw, 6rem);
+  font-weight: 950;
+  line-height: 1.02;
+  margin: 0;
+}
+
+.legal-hero-content p:not(.eyebrow) {
+  color: rgba(255, 255, 255, 0.84);
+  font-size: 1.08rem;
+  font-weight: 750;
+  line-height: 1.6;
+  margin: 1.2rem 0 0;
+  max-width: 46rem;
+}
+
+.legal-hero-content span {
+  background: var(--lime);
+  border-radius: 999px;
+  color: var(--ink);
+  display: inline-flex;
+  font-size: 0.88rem;
+  font-weight: 950;
+  margin-top: 1.5rem;
+  padding: 0.58rem 0.82rem;
+}
+
+.legal-document {
+  display: grid;
+  gap: 1rem;
+  margin: 4rem auto 0;
+  max-width: 68rem;
+  padding: 0 clamp(1rem, 4vw, 3rem) 2rem;
+}
+
+.legal-section {
+  background: #f7fbf6;
+  border: 1px solid #edf0ea;
+  border-radius: 1.2rem;
+  padding: clamp(1.2rem, 3vw, 2rem);
+}
+
+.legal-section h2 {
+  color: var(--ink);
+  font-size: clamp(1.45rem, 3vw, 2rem);
+  font-weight: 950;
+  line-height: 1.1;
+  margin: 0;
+}
+
+.legal-section p {
+  color: #4f535d;
+  font-size: 1rem;
+  font-weight: 650;
+  line-height: 1.7;
+  margin: 1rem 0 0;
+}
+
+.legal-section ul {
+  display: grid;
+  gap: 0.65rem;
+  list-style: none;
+  margin: 1rem 0 0;
+  padding: 0;
+}
+
+.legal-section li {
+  align-items: start;
+  color: #4b4f58;
+  display: grid;
+  font-weight: 800;
+  gap: 0.7rem;
+  grid-template-columns: auto 1fr;
+  line-height: 1.45;
+}
+
+.legal-section li::before {
+  background: var(--green);
+  border-radius: 999px;
+  content: "";
+  height: 0.62rem;
+  margin-top: 0.42rem;
+  width: 0.62rem;
+}
+
 .whatsapp-float {
   align-items: center;
   background: #25d366;
@@ -1651,18 +1771,21 @@ img {
   }
 
   .catalog-hero,
-  .product-detail-hero {
+  .product-detail-hero,
+  .legal-hero {
     border-radius: 1.2rem;
     min-height: 32rem;
   }
 
   .catalog-hero-content,
-  .product-detail-title {
+  .product-detail-title,
+  .legal-hero-content {
     padding: 11.5rem 1rem 3rem;
   }
 
   .catalog-hero-content h1,
-  .product-detail-title h1 {
+  .product-detail-title h1,
+  .legal-hero-content h1 {
     font-size: 2.6rem;
   }
 

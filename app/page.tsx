@@ -3,6 +3,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { useState } from "react";
+import { SiteFooter } from "./components/site-footer";
 import {
   getProductsByCategory,
   productCategories,
@@ -617,25 +618,7 @@ export default function Home() {
         </form>
       </section>
 
-      <footer className="site-footer">
-        <p>Adem Eren Decoration</p>
-        <div>
-          <a
-            href="https://kermitfloor.com/tr/spc-parke-elit-koleksiyonu"
-            rel="noreferrer"
-            target="_blank"
-          >
-            Elit SPC Parke
-          </a>
-          <a
-            href="https://kermitfloor.com/tr/spc-duvar-panelleri"
-            rel="noreferrer"
-            target="_blank"
-          >
-            SPC Duvar Panelleri
-          </a>
-        </div>
-      </footer>
+      <SiteFooter />
     </main>
   );
 }

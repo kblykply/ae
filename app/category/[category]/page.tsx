@@ -3,6 +3,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { CatalogHeader } from "../../components/catalog-header";
+import { SiteFooter } from "../../components/site-footer";
 import {
   getCategoryBySlug,
   getProductsByCategory,
@@ -92,6 +93,8 @@ export default async function CategoryPage({ params }: CategoryPageProps) {
           </Link>
         ))}
       </section>
+
+      <SiteFooter />
     </main>
   );
 }

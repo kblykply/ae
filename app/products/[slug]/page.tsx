@@ -3,6 +3,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { CatalogHeader } from "../../components/catalog-header";
+import { SiteFooter } from "../../components/site-footer";
 import {
   getProductBySlug,
   getRelatedProducts,
@@ -133,6 +134,8 @@ export default async function ProductDetailPage({ params }: ProductPageProps) {
           ))}
         </div>
       </section>
+
+      <SiteFooter />
     </main>
   );
 }
