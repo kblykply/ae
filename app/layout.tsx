@@ -1,24 +1,93 @@
 import type { Metadata } from "next";
+import {
+  getManagedSiteContent,
+  getWhatsAppUrl,
+} from "./data/site-content";
+import {
+  createLocalBusinessJsonLd,
+  defaultOgImage,
+  defaultSeoDescription,
+  homeServiceJsonLd,
+  jsonLdScriptProps,
+  localSeoKeywords,
+  websiteJsonLd,
+} from "./seo";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "Adem Eren Decoration | SPC Zemin ve Duvar Panelleri",
-  description:
-    "Adem Eren Decoration ile SPC parke panelleri, duvar panelleri, 3D paneller, numune seçimi ve proje planlaması.",
+  metadataBase: new URL(
+    process.env.NEXT_PUBLIC_SITE_URL ?? "https://ademerendecoration.com",
+  ),
+  applicationName: "Adem Eren Decoration",
+  category: "Decoration and construction materials",
+  creator: "Adem Eren Decoration",
+  title: {
+    default: "Kuzey Kıbrıs SPC Panel ve Dekorasyon | Adem Eren Decoration",
+    template: "%s | Adem Eren Decoration",
+  },
+  description: defaultSeoDescription,
+  alternates: {
+    canonical: "/",
+  },
+  keywords: localSeoKeywords,
+  openGraph: {
+    description: defaultSeoDescription,
+    images: [
+      {
+        alt: "Kuzey Kıbrıs SPC panel ve dekorasyon uygulaması",
+        height: 900,
+        url: defaultOgImage,
+        width: 1600,
+      },
+    ],
+    locale: "tr_CY",
+    siteName: "Adem Eren Decoration",
+    title: "Kuzey Kıbrıs SPC Panel ve Dekorasyon",
+    type: "website",
+  },
+  publisher: "Adem Eren Decoration",
+  robots: {
+    follow: true,
+    googleBot: {
+      follow: true,
+      index: true,
+      "max-image-preview": "large",
+      "max-snippet": -1,
+      "max-video-preview": -1,
+    },
+    index: true,
+  },
+  twitter: {
+    card: "summary_large_image",
+    description: defaultSeoDescription,
+    images: [defaultOgImage],
+    title: "Kuzey Kıbrıs SPC Panel ve Dekorasyon",
+  },
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const siteContent = await getManagedSiteContent();
+  const siteJsonLd = [
+    createLocalBusinessJsonLd(siteContent),
+    websiteJsonLd,
+    homeServiceJsonLd,
+  ];
+
   return (
-    <html lang="en" className="h-full antialiased">
+    <html lang="tr" className="h-full antialiased">
       <body className="min-h-full">
+        <script
+          dangerouslySetInnerHTML={jsonLdScriptProps(siteJsonLd)}
+          type="application/ld+json"
+        />
         <a
           aria-label="WhatsApp ile iletişime geç"
           className="whatsapp-float"
-          href="https://wa.me/905551234567"
+          href={getWhatsAppUrl(siteContent, "tr")}
           rel="noreferrer"
           target="_blank"
         >

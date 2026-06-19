@@ -28,7 +28,7 @@ export function LegalDocument({
           <p className="eyebrow">Adem Eren Decoration</p>
           <h1>{title}</h1>
           <p>{description}</p>
-          <span>Last updated: {lastUpdated}</span>
+          <span>Son güncelleme: {lastUpdated}</span>
         </div>
       </section>
 

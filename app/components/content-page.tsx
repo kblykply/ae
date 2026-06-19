@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import { useState } from "react";
 import { CatalogHeader } from "./catalog-header";
 import { SiteFooter } from "./site-footer";
@@ -16,6 +17,8 @@ type ContentPageProps = {
   defaultLanguage?: Language;
   description: Record<Language, string>;
   eyebrow?: string;
+  heroImage?: string;
+  heroImageAlt?: Record<Language, string>;
   sections: ContentSection[];
   title: Record<Language, string>;
 };
@@ -24,14 +27,27 @@ export function ContentPage({
   defaultLanguage = "tr",
   description,
   eyebrow = "Adem Eren Decoration",
+  heroImage,
+  heroImageAlt,
   sections,
   title,
 }: ContentPageProps) {
   const [language, setLanguage] = useState<Language>(defaultLanguage);
+  const resolvedHeroImageAlt = heroImageAlt?.[language] ?? "";
 
   return (
     <main className="site-shell legal-shell">
-      <section className="legal-hero">
+      <section className={`legal-hero${heroImage ? " has-image" : ""}`}>
+        {heroImage ? (
+          <Image
+            alt={resolvedHeroImageAlt}
+            className="legal-hero-image"
+            fill
+            preload
+            sizes="100vw"
+            src={heroImage}
+          />
+        ) : null}
         <CatalogHeader
           language={language}
           onLanguageChange={setLanguage}
@@ -40,6 +56,9 @@ export function ContentPage({
           <p className="eyebrow">{eyebrow}</p>
           <h1>{title[language]}</h1>
           <p>{description[language]}</p>
+          {resolvedHeroImageAlt ? (
+            <p className="image-context-caption">{resolvedHeroImageAlt}</p>
+          ) : null}
         </div>
       </section>
 

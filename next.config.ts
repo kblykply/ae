@@ -11,12 +11,22 @@ const nextConfig: NextConfig = {
         pathname: "/images/**",
         search: "",
       },
+      {
+        pathname: "/uploads/**",
+        search: "",
+      },
     ],
     remotePatterns: [
       {
         protocol: "https",
         hostname: "kermitfloor.com",
         pathname: "/images/**",
+        search: "",
+      },
+      {
+        protocol: "https",
+        hostname: "**.supabase.co",
+        pathname: "/storage/v1/object/public/**",
         search: "",
       },
     ],

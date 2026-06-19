@@ -19,6 +19,7 @@ export type Product = {
   description: LocalizedText;
   image: string;
   applicationImage: string;
+  galleryImages: string[];
   specs: Record<Language, string[]>;
   technicalSpecs: ProductSpec[];
   sourceUrl: string;
@@ -126,11 +127,15 @@ const createFloorProduct = (
   categoryLabel: { en: "SPC Flooring", tr: "SPC Parke" },
   collection: { en: "Elit SPC Flooring Collection", tr: "Elit SPC Parke Koleksiyonu" },
   description: {
-    en: `${name} rigid-core SPC flooring panel for homes, offices, showrooms, and commercial interiors.`,
-    tr: `${name}, evler, ofisler, showroomlar ve ticari projeler için rijit çekirdekli SPC parke paneli.`,
+    en: `${name} rigid-core SPC flooring panel for North Cyprus homes, offices, showrooms, and commercial interiors.`,
+    tr: `${name}, Kuzey Kıbrıs ev, villa, ofis, showroom ve ticari projeleri için rijit çekirdekli SPC parke paneli.`,
   },
   image: kermitImage(`/images/spc-flooring-elite-collection/${code}/product.jpg`),
   applicationImage: kermitImage(`/images/spc-flooring-elite-collection/${code}/application.jpg`),
+  galleryImages: [
+    kermitImage(`/images/spc-flooring-elite-collection/${code}/product.jpg`),
+    kermitImage(`/images/spc-flooring-elite-collection/${code}/application.jpg`),
+  ],
   specs: {
     en: ["5/6/7 mm", "23/33", "UniClic / I4F"],
     tr: ["5/6/7 mm", "23/33", "UniClic / I4F"],
@@ -151,11 +156,15 @@ const createWallProduct = (
   categoryLabel: { en: "SPC Wall Panels", tr: "SPC Duvar Panelleri" },
   collection: { en: "SPC Wall Panel Collection", tr: "SPC Duvar Paneli Koleksiyonu" },
   description: {
-    en: `${name} large-format waterproof SPC wall panel for bathrooms, wet areas, and feature walls.`,
-    tr: `${name}, banyo, ıslak hacim ve vurgu duvarları için geniş ebatlı suya dayanıklı SPC duvar paneli.`,
+    en: `${name} large-format waterproof SPC wall panel for North Cyprus bathrooms, wet areas, and feature walls.`,
+    tr: `${name}, Kıbrıs banyo, mutfak, ıslak hacim ve vurgu duvarları için geniş ebatlı suya dayanıklı SPC duvar paneli.`,
   },
   image: kermitImage(`/images/spc-wall-panels/${code}/product.jpg`),
   applicationImage: kermitImage(`/images/spc-wall-panels/${code}/application.jpg`),
+  galleryImages: [
+    kermitImage(`/images/spc-wall-panels/${code}/product.jpg`),
+    kermitImage(`/images/spc-wall-panels/${code}/application.jpg`),
+  ],
   specs: {
     en: ["4 mm", "960 x 2800 mm", "Glue-down"],
     tr: ["4 mm", "960 x 2800 mm", "Yapıştırma"],
@@ -176,8 +185,8 @@ export const productCategories = [
     label: { en: "SPC Flooring", tr: "SPC Parke" },
     shortLabel: { en: "SPC Floors", tr: "SPC Parke" },
     description: {
-      en: "Elit collection SPC flooring panels with wood looks, waterproof rigid core, and project-ready specifications.",
-      tr: "Ahşap görünümler, suya dayanıklı rijit çekirdek ve projeye hazır teknik değerlerle Elit SPC parke panelleri.",
+      en: "Elit collection SPC flooring panels with wood looks, waterproof rigid core, and project-ready specifications for North Cyprus interiors.",
+      tr: "Kuzey Kıbrıs ev, villa, ofis ve ticari projeleri için ahşap görünümlü, suya dayanıklı rijit çekirdekli Elit SPC parke panelleri.",
     },
     sourceUrl: floorSource,
   },
@@ -186,8 +195,8 @@ export const productCategories = [
     label: { en: "SPC Wall Panels", tr: "SPC Duvar Panelleri" },
     shortLabel: { en: "Wall Panels", tr: "Duvar Panelleri" },
     description: {
-      en: "Large-format SPC wall panels in marble, stone, concrete, and wood looks for fast renovation.",
-      tr: "Mermer, taş, beton ve ahşap görünümlü hızlı renovasyon için geniş ebatlı SPC duvar panelleri.",
+      en: "Large-format SPC wall panels in marble, stone, concrete, and wood looks for fast renovation in North Cyprus.",
+      tr: "Kuzey Kıbrıs banyo, mutfak, ıslak hacim ve vurgu duvarları için mermer, taş, beton ve ahşap görünümlü geniş ebatlı SPC duvar panelleri.",
     },
     sourceUrl: wallSource,
   },

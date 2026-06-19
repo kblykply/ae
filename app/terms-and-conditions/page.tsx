@@ -2,75 +2,75 @@ import type { Metadata } from "next";
 import { LegalDocument } from "../components/legal-document";
 
 export const metadata: Metadata = {
-  title: "Terms & Conditions | Adem Eren Decoration",
+  title: "Şartlar ve Koşullar | Adem Eren Decoration",
   description:
-    "Terms and Conditions for using the Adem Eren Decoration website and requesting SPC floor and wall panel project information.",
+    "Adem Eren Decoration web sitesi kullanımı, numune talepleri ve SPC parke/duvar paneli proje bilgilendirmeleri için şartlar ve koşullar.",
 };
 
 const termsSections = [
   {
-    title: "Website use",
+    title: "Web sitesi kullanımı",
     body: [
-      "This website is provided by Adem Eren Decoration to present SPC floor panels, SPC wall panels, 3D panel finishes, project inspiration, sample requests, and contact options.",
-      "By using the website, you agree to use it lawfully and only for personal, project, or business inquiry purposes related to interior finish selection and installation planning.",
+      "Bu web sitesi, Adem Eren Decoration tarafından SPC parke panelleri, SPC duvar panelleri, 3D panel seçenekleri, proje ilhamları, numune talepleri ve iletişim seçeneklerini sunmak amacıyla hazırlanmıştır.",
+      "Web sitesini kullanarak iç mekan yüzey seçimi ve uygulama planlamasıyla ilgili kişisel, proje veya ticari bilgi talepleri için yasal ve doğru şekilde kullanmayı kabul edersiniz.",
     ],
   },
   {
-    title: "No online sales checkout",
+    title: "Online satış yapılmaz",
     body: [
-      "The website is not an online furniture or product checkout store. Products shown on the website are presented for finish selection, sample requests, project discussion, and quotation planning.",
-      "A quote, sample request, product reservation, installation date, or order is not confirmed until Adem Eren Decoration confirms it directly in writing or through agreed communication.",
+      "Web sitesi online mobilya veya ürün satış sepeti değildir. Ürünler yüzey seçimi, numune talebi, proje görüşmesi ve teklif planlaması amacıyla gösterilir.",
+      "Teklif, numune talebi, ürün rezervasyonu, uygulama tarihi veya sipariş; Adem Eren Decoration tarafından yazılı veya mutabık kalınan iletişim yöntemiyle onaylanmadan kesinleşmiş sayılmaz.",
     ],
   },
   {
-    title: "Product information",
+    title: "Ürün bilgileri",
     body: [
-      "Images, colors, product names, technical notes, and collection details are provided for general guidance. Screen colors, lighting, batch differences, and installation conditions can affect the final appearance.",
-      "Availability, specifications, dimensions, collection names, and supplier information may change. Final project decisions should be based on current samples, measurements, technical sheets, and direct confirmation.",
+      "Görseller, renkler, ürün adları, teknik notlar ve koleksiyon detayları genel yönlendirme için sunulur. Ekran renkleri, ışık, parti farkları ve uygulama koşulları nihai görünümü etkileyebilir.",
+      "Stok, teknik özellik, ölçü, koleksiyon adı ve tedarikçi bilgileri değişebilir. Nihai proje kararları güncel numune, ölçü, teknik föy ve doğrudan teyit üzerinden verilmelidir.",
     ],
   },
   {
-    title: "Quotes, measurements, and installation",
+    title: "Teklif, ölçü ve uygulama",
     body: [
-      "Project pricing depends on the selected product, quantity, site measurements, preparation needs, installation scope, location, timing, and other practical details.",
-      "Any project agreement, payment schedule, delivery condition, warranty detail, or installation responsibility should be confirmed separately before work begins.",
+      "Proje fiyatı seçilen ürün, miktar, saha ölçüsü, hazırlık ihtiyacı, uygulama kapsamı, lokasyon, zamanlama ve diğer pratik detaylara göre belirlenir.",
+      "Proje anlaşması, ödeme planı, teslim koşulu, garanti detayı veya uygulama sorumluluğu işe başlanmadan önce ayrıca teyit edilmelidir.",
     ],
   },
   {
-    title: "Your responsibilities",
+    title: "Sorumluluklarınız",
     body: [
-      "When you contact us, you agree to provide accurate contact details and project information. You are responsible for reviewing samples, checking measurements, confirming site conditions, and making sure the selected finish is suitable for your project.",
+      "Bizimle iletişime geçtiğinizde doğru iletişim ve proje bilgileri paylaşmayı kabul edersiniz. Numuneleri incelemek, ölçüleri kontrol etmek, saha koşullarını teyit etmek ve seçilen panelin projeye uygunluğunu değerlendirmek sizin sorumluluğunuzdadır.",
     ],
     items: [
-      "Do not misuse the website, forms, links, or contact options.",
-      "Do not send unlawful, misleading, or harmful content.",
-      "Do not copy website content, logos, images, or layouts without permission.",
+      "Web sitesini, formları, bağlantıları veya iletişim seçeneklerini kötüye kullanmayın.",
+      "Yasa dışı, yanıltıcı veya zararlı içerik göndermeyin.",
+      "Web sitesi içeriklerini, logoları, görselleri veya tasarım unsurlarını izinsiz kopyalamayın.",
     ],
   },
   {
-    title: "Third-party links and materials",
+    title: "Üçüncü taraf bağlantılar",
     body: [
-      "The website may link to supplier pages, product sources, messaging services, or other third-party websites. Adem Eren Decoration is not responsible for third-party websites, their content, their policies, or their service availability.",
+      "Web sitesi tedarikçi sayfalarına, ürün kaynaklarına, mesajlaşma servislerine veya diğer üçüncü taraf web sitelerine bağlantı verebilir. Adem Eren Decoration bu sitelerin içeriklerinden, politikalarından veya erişilebilirliğinden sorumlu değildir.",
     ],
   },
   {
-    title: "Intellectual property",
+    title: "Fikri mülkiyet",
     body: [
-      "The Adem Eren Decoration name, AE Dekorasyon logo, website layout, text, and design elements are protected by their respective owners. Product photos, supplier names, and source materials remain the property of their respective owners.",
+      "Adem Eren Decoration adı, AE Dekorasyon logosu, web sitesi düzeni, metinler ve tasarım unsurları ilgili hak sahipleri tarafından korunur. Ürün fotoğrafları, tedarikçi adları ve kaynak materyaller kendi sahiplerine aittir.",
     ],
   },
   {
-    title: "Limitation of liability",
+    title: "Sorumluluğun sınırlandırılması",
     body: [
-      "The website is provided for general information and project inquiry. We work to keep the content useful and current, but we do not guarantee that the website will always be uninterrupted, error-free, or complete.",
-      "To the fullest extent allowed by applicable rules, Adem Eren Decoration is not responsible for indirect loss, project delay, color mismatch, product unavailability, or decisions made without reviewing current samples and direct project confirmation.",
+      "Web sitesi genel bilgilendirme ve proje talebi amacıyla sunulur. İçeriği faydalı ve güncel tutmaya çalışırız ancak web sitesinin her zaman kesintisiz, hatasız veya eksiksiz olacağını garanti etmeyiz.",
+      "Uygulanabilir kuralların izin verdiği ölçüde, güncel numune ve doğrudan proje teyidi olmadan verilen kararlardan, dolaylı kayıplardan, proje gecikmesinden, renk uyumsuzluğundan veya ürün bulunamamasından Adem Eren Decoration sorumlu değildir.",
     ],
   },
   {
-    title: "Changes and contact",
+    title: "Değişiklikler ve iletişim",
     body: [
-      "We may update these Terms and Conditions when the website, services, or business process changes. The updated version will be posted on this page.",
-      "For questions about these terms, contact Adem Eren Decoration through the website contact section or the WhatsApp button.",
+      "Web sitesi, hizmetler veya iş süreci değiştiğinde bu Şartlar ve Koşullar güncellenebilir. Güncel sürüm bu sayfada yayınlanır.",
+      "Bu şartlarla ilgili sorular için web sitesindeki iletişim bölümünden veya WhatsApp butonundan Adem Eren Decoration ile iletişime geçebilirsiniz.",
     ],
   },
 ];
@@ -78,10 +78,10 @@ const termsSections = [
 export default function TermsAndConditionsPage() {
   return (
     <LegalDocument
-      description="These Terms and Conditions explain how visitors may use this website and how sample requests, quotes, and project communication are handled."
-      lastUpdated="June 5, 2026"
+      description="Bu Şartlar ve Koşullar, ziyaretçilerin web sitesini nasıl kullanabileceğini ve numune talepleri, teklifler ve proje iletişiminin nasıl ele alındığını açıklar."
+      lastUpdated="5 Haziran 2026"
       sections={termsSections}
-      title="Terms & Conditions"
+      title="Şartlar ve Koşullar"
     />
   );
 }

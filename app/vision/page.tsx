@@ -1,10 +1,34 @@
 import type { Metadata } from "next";
 import { ContentPage } from "../components/content-page";
+import { createWebPageImageJsonLd } from "../data/image-seo";
+import { jsonLdScriptProps } from "../seo";
+
+const visionDescription =
+  "Adem Eren Decoration vizyonu: Kuzey Kıbrıs ve KKTC projelerinde SPC parke, SPC duvar paneli ve iç mekan dekorasyon seçimlerini daha net, güvenilir ve projeye hazır hale getirmek.";
+const visionVisualSeoImage = {
+  alt: "Modern bir yüzey stüdyosunda SPC panel numunelerini inceleyen iç mimar",
+  caption:
+    "Kuzey Kıbrıs projelerinde SPC panel, zemin kaplama ve dekoratif yüzey seçimini daha net hale getirme vizyonu.",
+  title: "Adem Eren Decoration vizyon görseli",
+  url: "/images/ae-vision-hero.jpg",
+};
 
 export const metadata: Metadata = {
-  title: "Vision | Adem Eren Decoration",
-  description:
-    "Adem Eren Decoration vision for SPC floor panels, wall panels, and project-focused interior finish selection.",
+  title: "Vizyon | Kuzey Kıbrıs SPC Panel ve Dekorasyon",
+  description: visionDescription,
+  openGraph: {
+    description:
+      "Kuzey Kıbrıs projeleri için SPC panel, iç mekan dekorasyon ve numune seçim vizyonu.",
+    images: [
+      {
+        alt: "Adem Eren Decoration vizyon sayfası iç mekan stüdyosu",
+        height: 900,
+        url: "/images/ae-vision-hero.jpg",
+        width: 1680,
+      },
+    ],
+    title: "Vizyon | Kuzey Kıbrıs SPC Panel ve Dekorasyon",
+  },
 };
 
 const visionSections = [
@@ -19,8 +43,8 @@ const visionSections = [
         "We want every project to feel cleaner, calmer, and easier to plan by connecting material samples, technical details, quantity planning, and installation coordination in one practical process.",
       ],
       tr: [
-        "Modern iç mekanlar için güvenilir bir yüzey seçim stüdyosu olmak; ev sahiplerinin, mimarların ve ticari proje ekiplerinin dayanıklı SPC zemin ve duvar panellerini güvenle seçmesine yardımcı olmak.",
-        "Numune, teknik detay, metraj planlama ve uygulama koordinasyonunu tek pratik süreçte buluşturarak her projenin daha temiz, daha sakin ve daha kolay planlanmasını hedefliyoruz.",
+        "Kuzey Kıbrıs modern iç mekanları için güvenilir bir SPC panel ve dekorasyon stüdyosu olmak; ev sahiplerinin, mimarların ve ticari proje ekiplerinin dayanıklı SPC zemin ve duvar panellerini güvenle seçmesine yardımcı olmak.",
+        "Lefkoşa, Girne, Gazimağusa, İskele ve KKTC genelindeki projelerde numune, teknik detay, metraj planlama ve uygulama koordinasyonunu tek pratik süreçte buluşturmayı hedefliyoruz.",
       ],
     },
   },
@@ -34,7 +58,7 @@ const visionSections = [
         "Adem Eren Decoration focuses on surfaces that shape the feeling of a space: floors, walls, wet area panels, and textured decorative panels.",
       ],
       tr: [
-        "Adem Eren Decoration, bir mekanın hissini belirleyen yüzeylere odaklanır: zeminler, duvarlar, ıslak hacim panelleri ve dokulu dekoratif paneller.",
+        "Adem Eren Decoration, Kuzey Kıbrıs'ta bir mekanın hissini belirleyen yüzeylere odaklanır: SPC parkeler, SPC duvar panelleri, ıslak hacim panelleri ve dokulu dekoratif paneller.",
       ],
     },
     items: {
@@ -68,16 +92,34 @@ const visionSections = [
 
 export default function VisionPage() {
   return (
-    <ContentPage
-      description={{
-        en: "Our vision is to make SPC floor and wall panel selection clearer, more reliable, and more project-ready for every interior.",
-        tr: "Vizyonumuz, SPC zemin ve duvar paneli seçimini her iç mekan için daha net, güvenilir ve projeye hazır hale getirmektir.",
-      }}
-      sections={visionSections}
-      title={{
-        en: "Vision",
-        tr: "Vizyon",
-      }}
-    />
+    <>
+      <script
+        dangerouslySetInnerHTML={jsonLdScriptProps(
+          createWebPageImageJsonLd({
+            description: visionDescription,
+            image: visionVisualSeoImage,
+            name: "Vizyon | Kuzey Kıbrıs SPC Panel ve Dekorasyon",
+            path: "/vision",
+          }),
+        )}
+        type="application/ld+json"
+      />
+      <ContentPage
+        description={{
+          en: "Our vision is to make SPC floor and wall panel selection clearer, more reliable, and more project-ready for every interior.",
+          tr: "Vizyonumuz, Kuzey Kıbrıs'ta SPC zemin ve duvar paneli seçimini her iç mekan için daha net, güvenilir ve projeye hazır hale getirmektir.",
+        }}
+        heroImage="/images/ae-vision-hero.jpg"
+        heroImageAlt={{
+          en: "Interior designer reviewing SPC panel samples in a modern finish studio",
+          tr: "Modern bir yüzey stüdyosunda SPC panel numunelerini inceleyen iç mimar",
+        }}
+        sections={visionSections}
+        title={{
+          en: "Vision",
+          tr: "Vizyon",
+        }}
+      />
+    </>
   );
 }

@@ -3,22 +3,37 @@ import Image from "next/image";
 import Link from "next/link";
 import { CatalogHeader } from "../components/catalog-header";
 import { SiteFooter } from "../components/site-footer";
-import {
-  productCategories,
-  products,
-  type Product,
-  type ProductCategorySlug,
-} from "../data/products";
+import { getManagedProducts } from "../data/catalog-store";
+import { productCategories, type Product, type ProductCategorySlug } from "../data/products";
+import { defaultOgImage } from "../seo";
 
 type SearchPageProps = {
   searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
 };
 
 export const metadata: Metadata = {
-  title: "Search Catalog | Adem Eren Decoration",
+  title: "Kıbrıs SPC Panel Arama | SPC Parke ve Duvar Paneli",
   description:
-    "Search SPC flooring, wall panels, and decorative panel finishes from Adem Eren Decoration.",
+    "Kuzey Kıbrıs ve KKTC projeleri için SPC duvar paneli, SPC parke, banyo paneli ve dekoratif panel koleksiyonlarında ürün kodu, renk ve materyal arayın.",
+  alternates: {
+    canonical: "/search",
+  },
+  openGraph: {
+    description:
+      "Lefkoşa, Girne, Gazimağusa ve İskele projeleri için SPC panel ve SPC parke kataloğunda arama yapın.",
+    images: [
+      {
+        alt: "Kıbrıs SPC panel katalog arama",
+        height: 900,
+        url: defaultOgImage,
+        width: 1600,
+      },
+    ],
+    title: "Kıbrıs SPC Panel Arama",
+  },
 };
+
+export const dynamic = "force-dynamic";
 
 const getSingleParam = (value: string | string[] | undefined) =>
   Array.isArray(value) ? value[0] ?? "" : value ?? "";
@@ -45,6 +60,7 @@ const getProductSearchText = (product: Product) =>
       product.collection.tr,
       product.description.en,
       product.description.tr,
+      ...product.galleryImages,
       ...product.specs.en,
       ...product.specs.tr,
       ...product.technicalSpecs.flatMap((spec) => [
@@ -88,24 +104,24 @@ const scoreProduct = (product: Product, query: string) => {
   return score;
 };
 
-const collectionOptions = Array.from(
-  new Map(
-    products.map((product) => [
-      toParam(product.collection.tr),
-      {
-        label: product.collection.tr,
-        value: toParam(product.collection.tr),
-      },
-    ]),
-  ).values(),
-);
-
 export default async function SearchPage({ searchParams }: SearchPageProps) {
   const params = await searchParams;
+  const products = await getManagedProducts();
   const query = getSingleParam(params.q).trim();
   const category = getSingleParam(params.category) as ProductCategorySlug | "";
   const collection = getSingleParam(params.collection);
   const sort = getSingleParam(params.sort) || "relevance";
+  const collectionOptions = Array.from(
+    new Map(
+      products.map((product) => [
+        toParam(product.collection.tr),
+        {
+          label: product.collection.tr,
+          value: toParam(product.collection.tr),
+        },
+      ]),
+    ).values(),
+  );
 
   const activeCategory = productCategories.some(
     (item) => item.slug === category,
@@ -152,8 +168,8 @@ export default async function SearchPage({ searchParams }: SearchPageProps) {
 
   const summary =
     filteredProducts.length === 1
-      ? "1 result"
-      : `${filteredProducts.length} results`;
+      ? "1 sonuç"
+      : `${filteredProducts.length} sonuç`;
 
   return (
     <main className="site-shell search-page">
@@ -161,11 +177,12 @@ export default async function SearchPage({ searchParams }: SearchPageProps) {
         <CatalogHeader />
         <div className="catalog-hero-overlay" />
         <div className="catalog-hero-content search-hero-content">
-          <p className="eyebrow">Product search</p>
-          <h1>Search SPC finishes</h1>
+          <p className="eyebrow">Ürün arama</p>
+          <h1>Kıbrıs SPC panel arama</h1>
           <p>
-            Find SPC flooring, wall panels, and decorative panel surfaces by
-            code, collection, color name, material, or application detail.
+            Kuzey Kıbrıs projeleri için SPC parke, SPC duvar paneli, banyo
+            paneli ve dekoratif panel seçeneklerini kod, koleksiyon, renk adı,
+            materyal veya uygulama detayına göre bulun.
           </p>
         </div>
       </section>
@@ -173,24 +190,24 @@ export default async function SearchPage({ searchParams }: SearchPageProps) {
       <section className="catalog-search">
         <form action="/search" className="catalog-search-panel" method="get">
           <div className="catalog-search-field catalog-search-field-wide">
-            <label htmlFor="search-query">Search term</label>
+            <label htmlFor="search-query">Arama kelimesi</label>
             <input
               defaultValue={query}
               id="search-query"
               name="q"
-              placeholder="Oak, marble, P-201, 613..."
+              placeholder="Meşe, mermer, P-201, 613..."
               type="search"
             />
           </div>
 
           <div className="catalog-search-field">
-            <label htmlFor="search-category">Category</label>
+            <label htmlFor="search-category">Kategori</label>
             <select
               defaultValue={activeCategory}
               id="search-category"
               name="category"
             >
-              <option value="">All categories</option>
+              <option value="">Tüm kategoriler</option>
               {productCategories.map((item) => (
                 <option key={item.slug} value={item.slug}>
                   {item.label.tr}
@@ -200,13 +217,13 @@ export default async function SearchPage({ searchParams }: SearchPageProps) {
           </div>
 
           <div className="catalog-search-field">
-            <label htmlFor="search-collection">Collection</label>
+            <label htmlFor="search-collection">Koleksiyon</label>
             <select
               defaultValue={activeCollection}
               id="search-collection"
               name="collection"
             >
-              <option value="">All collections</option>
+              <option value="">Tüm koleksiyonlar</option>
               {collectionOptions.map((item) => (
                 <option key={item.value} value={item.value}>
                   {item.label}
@@ -216,27 +233,27 @@ export default async function SearchPage({ searchParams }: SearchPageProps) {
           </div>
 
           <div className="catalog-search-field">
-            <label htmlFor="search-sort">Sort</label>
+            <label htmlFor="search-sort">Sıralama</label>
             <select defaultValue={sort} id="search-sort" name="sort">
-              <option value="relevance">Relevance</option>
-              <option value="name">Name</option>
-              <option value="code">Code</option>
+              <option value="relevance">Alaka düzeyi</option>
+              <option value="name">İsim</option>
+              <option value="code">Kod</option>
             </select>
           </div>
 
           <div className="catalog-search-actions">
-            <button type="submit">Search</button>
-            <Link href="/search">Clear</Link>
+            <button type="submit">Ara</button>
+            <Link href="/search">Temizle</Link>
           </div>
         </form>
 
         <div className="catalog-search-results">
           <div className="catalog-search-summary">
             <div>
-              <p className="eyebrow">Catalog results</p>
+              <p className="eyebrow">Katalog sonuçları</p>
               <h2>{summary}</h2>
             </div>
-            {query ? <span>Keyword: {query}</span> : <span>All products</span>}
+            {query ? <span>Kelime: {query}</span> : <span>Tüm ürünler</span>}
           </div>
 
           {filteredProducts.length > 0 ? (
@@ -265,12 +282,12 @@ export default async function SearchPage({ searchParams }: SearchPageProps) {
             </div>
           ) : (
             <div className="empty-search">
-              <h2>No matching products</h2>
+              <h2>Eşleşen ürün yok</h2>
               <p>
-                Try a product code, collection name, material look, or a broader
-                category filter.
+                Ürün kodu, koleksiyon adı, materyal görünümü veya daha geniş
+                bir kategori filtresi deneyin.
               </p>
-              <Link href="/search">View all products</Link>
+              <Link href="/search">Tüm ürünleri göster</Link>
             </div>
           )}
         </div>

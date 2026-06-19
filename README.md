@@ -1,36 +1,41 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Adem Eren Frontend
 
-## Getting Started
+Next.js website and admin panel for Adem Eren Decoration.
+
+## Run Locally
 
 First, run the development server:
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Admin Panel
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+The catalog manager is available at `/admin`.
 
-## Learn More
+Set the frontend environment before deploying:
 
-To learn more about Next.js, take a look at the following resources:
+```bash
+ADMIN_PASSWORD=change-this-before-deploy
+BACKEND_URL=https://your-backend-domain.com
+BACKEND_ADMIN_TOKEN=same-token-as-backend
+NEXT_PUBLIC_SITE_URL=https://your-vercel-domain.com
+```
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+Without `ADMIN_PASSWORD`, the local starter password is `ademeren-admin`.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+The product API lives in the separate `ademerenback/` project. Run it locally with:
 
-## Deploy on Vercel
+```bash
+cd ../ademerenback
+npm run dev
+```
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+Without `BACKEND_URL`, the frontend falls back to local file storage for
+development. With `BACKEND_URL`, public catalog pages and the admin panel use
+the backend API.
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+For Vercel, set the project root directory to `ademerenfront`.

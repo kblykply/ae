@@ -3,6 +3,11 @@
 import Image from "next/image";
 import Link from "next/link";
 import { useState } from "react";
+import {
+  HeaderDesktopNavigation,
+  HeaderMobileNavigation,
+} from "./header-navigation";
+import { navText } from "../data/site-navigation";
 
 type Language = "en" | "tr";
 
@@ -18,9 +23,17 @@ const headerCopy = {
     languageLabel: "Language",
     closeMenuLabel: "Close menu",
     menuLabel: "Open menu",
-    nav: ["SPC Floors", "Wall Panels", "Vision", "Mission", "Projects", "Contact"],
+    nav: [
+      "SPC Floors",
+      "Wall Panels",
+      "About",
+      "Vision",
+      "Mission",
+      "Projects",
+      "Contact",
+    ],
     searchLabel: "Search products",
-    searchPlaceholder: "Search SPC finishes",
+    searchPlaceholder: "Search SPC panels in Cyprus",
   },
   tr: {
     ariaHome: "AE Dekorasyon ana sayfa",
@@ -28,9 +41,17 @@ const headerCopy = {
     languageLabel: "Dil seçimi",
     closeMenuLabel: "Menüyü kapat",
     menuLabel: "Menüyü aç",
-    nav: ["SPC Parke", "Duvar Panelleri", "Vizyon", "Misyon", "Projeler", "İletişim"],
+    nav: [
+      "SPC Parke",
+      "Duvar Panelleri",
+      "Hakkımızda",
+      "Vizyon",
+      "Misyon",
+      "Projeler",
+      "İletişim",
+    ],
     searchLabel: "Ürün ara",
-    searchPlaceholder: "SPC panel ara",
+    searchPlaceholder: "SPC panel, parke, Kıbrıs ara",
   },
 } as const;
 
@@ -66,14 +87,12 @@ export function CatalogHeader({
         <span />
       </button>
 
-      <nav className="desktop-nav" aria-label={copy.ariaNav}>
-        <Link href="/category/spc-parke">{copy.nav[0]}</Link>
-        <Link href="/category/spc-duvar-panelleri">{copy.nav[1]}</Link>
-        <Link href="/vision">{copy.nav[2]}</Link>
-        <Link href="/mission">{copy.nav[3]}</Link>
-        <Link href="/#projects">{copy.nav[4]}</Link>
-        <Link href="/#contact">{copy.nav[5]}</Link>
-      </nav>
+      <HeaderDesktopNavigation
+        ariaLabel={copy.ariaNav}
+        contactHref="/#contact"
+        language={language}
+        projectsHref="/#projects"
+      />
 
       <div className="header-actions">
         <label className="language-select">
@@ -86,7 +105,7 @@ export function CatalogHeader({
             }
             value={onLanguageChange ? language : undefined}
           >
-            <option value="en">English</option>
+            <option value="en">İngilizce</option>
             <option value="tr">Türkçe</option>
           </select>
         </label>
@@ -115,7 +134,7 @@ export function CatalogHeader({
           />
         </form>
         <Link className="header-contact" href="/#contact">
-          {copy.nav[5]}
+          {navText[language].contact}
         </Link>
       </div>
 
@@ -123,29 +142,13 @@ export function CatalogHeader({
         className={`mobile-menu-panel${mobileMenuOpen ? " is-open" : ""}`}
         id="catalog-mobile-menu"
       >
-        <nav className="mobile-menu-nav" aria-label={copy.ariaNav}>
-          <Link href="/category/spc-parke" onClick={() => setMobileMenuOpen(false)}>
-            {copy.nav[0]}
-          </Link>
-          <Link
-            href="/category/spc-duvar-panelleri"
-            onClick={() => setMobileMenuOpen(false)}
-          >
-            {copy.nav[1]}
-          </Link>
-          <Link href="/vision" onClick={() => setMobileMenuOpen(false)}>
-            {copy.nav[2]}
-          </Link>
-          <Link href="/mission" onClick={() => setMobileMenuOpen(false)}>
-            {copy.nav[3]}
-          </Link>
-          <Link href="/#projects" onClick={() => setMobileMenuOpen(false)}>
-            {copy.nav[4]}
-          </Link>
-          <Link href="/#contact" onClick={() => setMobileMenuOpen(false)}>
-            {copy.nav[5]}
-          </Link>
-        </nav>
+        <HeaderMobileNavigation
+          ariaLabel={copy.ariaNav}
+          contactHref="/#contact"
+          language={language}
+          onNavigate={() => setMobileMenuOpen(false)}
+          projectsHref="/#projects"
+        />
 
         <div className="mobile-menu-actions">
           <label className="language-select">
@@ -158,7 +161,7 @@ export function CatalogHeader({
               }
               value={onLanguageChange ? language : undefined}
             >
-              <option value="en">English</option>
+              <option value="en">İngilizce</option>
               <option value="tr">Türkçe</option>
             </select>
           </label>
@@ -191,7 +194,7 @@ export function CatalogHeader({
             href="/#contact"
             onClick={() => setMobileMenuOpen(false)}
           >
-            {copy.nav[5]}
+            {navText[language].contact}
           </Link>
         </div>
       </div>
