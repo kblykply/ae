@@ -2,10 +2,7 @@ import type { Metadata } from "next";
 import Image from "next/image";
 import { AdminDashboard } from "./admin-dashboard";
 import { loginAdmin } from "./actions";
-import {
-  isAdminAuthenticated,
-  isUsingDefaultAdminPassword,
-} from "./auth";
+import { isAdminAuthenticated } from "./auth";
 import {
   getCatalogConnectionStatus,
   getManagedProducts,
@@ -69,13 +66,6 @@ export default async function AdminPage({ searchParams }: AdminPageProps) {
             <button type="submit">Giriş yap</button>
           </form>
 
-          {isUsingDefaultAdminPassword() ? (
-            <p className="admin-note">
-              Başlangıç şifresi <strong>ademeren-admin</strong>. Yönetim
-              panelini yayınlamadan önce Vercel üzerinde ADMIN_PASSWORD
-              değerini ayarlayın.
-            </p>
-          ) : null}
         </section>
       </main>
     );
@@ -93,7 +83,6 @@ export default async function AdminPage({ searchParams }: AdminPageProps) {
     <AdminDashboard
       blogPosts={blogPosts}
       catalogStatus={catalogStatus}
-      isUsingDefaultPassword={isUsingDefaultAdminPassword()}
       leads={leads}
       products={products}
       siteContent={siteContent}

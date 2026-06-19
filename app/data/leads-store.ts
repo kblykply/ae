@@ -37,7 +37,7 @@ const backendBaseUrl = (process.env.BACKEND_URL ?? "").replace(/\/$/, "");
 const backendAdminToken =
   process.env.BACKEND_ADMIN_TOKEN ??
   process.env.ADMIN_PASSWORD ??
-  "ademeren-admin";
+  "";
 const leadStatuses: LeadStatus[] = ["new", "contacted", "closed"];
 
 const getBackendEndpoint = (pathname: string) =>

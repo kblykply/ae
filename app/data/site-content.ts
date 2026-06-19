@@ -26,7 +26,7 @@ const backendBaseUrl = (process.env.BACKEND_URL ?? "").replace(/\/$/, "");
 const backendAdminToken =
   process.env.BACKEND_ADMIN_TOKEN ??
   process.env.ADMIN_PASSWORD ??
-  "ademeren-admin";
+  "";
 
 const getBackendEndpoint = (pathname: string) =>
   backendBaseUrl ? `${backendBaseUrl}${pathname}` : "";

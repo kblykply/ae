@@ -27,7 +27,6 @@ type DashboardSection =
 type AdminDashboardProps = {
   blogPosts: BlogPost[];
   catalogStatus: CatalogConnectionStatus;
-  isUsingDefaultPassword: boolean;
   leads: Lead[];
   products: Product[];
   siteContent: SiteContent;
@@ -52,7 +51,6 @@ const sectionDescriptions: Record<DashboardSection, string> = {
 export function AdminDashboard({
   blogPosts,
   catalogStatus,
-  isUsingDefaultPassword,
   leads,
   products,
   siteContent,
@@ -137,13 +135,6 @@ export function AdminDashboard({
             </form>
           </div>
         </header>
-
-        {isUsingDefaultPassword ? (
-          <p className="admin-alert admin-wide-alert">
-            Bu panel başlangıç şifresini kullanıyor. Yayına almadan önce
-            ADMIN_PASSWORD değerini ayarlayın.
-          </p>
-        ) : null}
 
         <section
           className="dashboard-section dashboard-overview"

@@ -25,7 +25,8 @@ BACKEND_ADMIN_TOKEN=same-token-as-backend
 NEXT_PUBLIC_SITE_URL=https://your-vercel-domain.com
 ```
 
-Without `ADMIN_PASSWORD`, the local starter password is `ademeren-admin`.
+`ADMIN_PASSWORD` is required for admin login. Keep it only in the hosting
+environment variables and do not commit it to Git.
 
 The product API lives in the separate `ademerenback/` project. Run it locally with:
 

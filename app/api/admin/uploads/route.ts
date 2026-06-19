@@ -14,7 +14,7 @@ const backendAdminToken =
   process.env.BACKEND_ADMIN_TOKEN ??
   process.env.ADMIN_TOKEN ??
   process.env.ADMIN_PASSWORD ??
-  "ademeren-admin";
+  "";
 const allowedExtensions = new Set(["avif", "gif", "jpg", "jpeg", "png", "webp"]);
 const extensionByMime: Record<string, string> = {
   "image/avif": "avif",

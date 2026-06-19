@@ -10,13 +10,20 @@ import {
 
 export async function loginAdmin(formData: FormData) {
   const password = String(formData.get("password") ?? "");
+  const adminPassword = getAdminPassword();
 
-  if (password !== getAdminPassword()) {
+  if (!adminPassword || password !== adminPassword) {
+    redirect("/admin?error=invalid");
+  }
+
+  const sessionValue = getAdminSessionValue();
+
+  if (!sessionValue) {
     redirect("/admin?error=invalid");
   }
 
   const cookieStore = await cookies();
-  cookieStore.set(adminCookieName, getAdminSessionValue(), {
+  cookieStore.set(adminCookieName, sessionValue, {
     httpOnly: true,
     maxAge: 60 * 60 * 8,
     path: "/",
