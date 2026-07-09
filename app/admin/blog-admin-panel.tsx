@@ -110,6 +110,12 @@ export function BlogAdminPanel({ initialPosts }: BlogAdminPanelProps) {
   }, [posts, query, statusFilter]);
   const publishedCount = posts.filter((post) => post.status === "published")
     .length;
+  const hasListFilters = Boolean(query.trim() || statusFilter !== "all");
+
+  const clearListFilters = () => {
+    setQuery("");
+    setStatusFilter("all");
+  };
 
   const updateSelectedPost = (updater: (post: BlogPost) => BlogPost) => {
     setPosts((currentPosts) =>
@@ -359,6 +365,20 @@ export function BlogAdminPanel({ initialPosts }: BlogAdminPanelProps) {
           </select>
         </div>
 
+        <div className="admin-list-meta">
+          <div>
+            <strong>Yazı listesi</strong>
+            <span>
+              {visiblePosts.length} yazı gösteriliyor · toplam {posts.length}
+            </span>
+          </div>
+          {hasListFilters ? (
+            <button onClick={clearListFilters} type="button">
+              Filtreleri temizle
+            </button>
+          ) : null}
+        </div>
+
         <div className="admin-product-list admin-blog-list">
           {visiblePosts.map((post) => {
             const postIndex = posts.findIndex((item) => item.slug === post.slug);
@@ -370,10 +390,10 @@ export function BlogAdminPanel({ initialPosts }: BlogAdminPanelProps) {
                 onClick={() => setSelectedIndex(Math.max(0, postIndex))}
                 type="button"
               >
-                <span>{post.title}</span>
+                <span>{post.status === "published" ? "Yayında" : "Taslak"}</span>
+                <strong>{post.title}</strong>
                 <small>
-                  {post.status === "published" ? "Yayında" : "Taslak"} ·{" "}
-                  {post.category}
+                  {post.category} · {new Date(post.publishedAt).toLocaleDateString("tr-TR")}
                 </small>
               </button>
             );
