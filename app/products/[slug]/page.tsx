@@ -9,6 +9,10 @@ import {
   getManagedRelatedProducts,
 } from "../../data/catalog-store";
 import {
+  getManagedSiteContent,
+  getWhatsAppUrl,
+} from "../../data/site-content";
+import {
   createWebPageImageJsonLd,
   getProductGalleryImageAlt,
   getProductImageCaption,
@@ -84,7 +88,10 @@ export default async function ProductDetailPage({ params }: ProductPageProps) {
     notFound();
   }
 
-  const relatedProducts = await getManagedRelatedProducts(product);
+  const [relatedProducts, siteContent] = await Promise.all([
+    getManagedRelatedProducts(product),
+    getManagedSiteContent(),
+  ]);
   const galleryImages = Array.from(
     new Set([
       product.image,
@@ -95,6 +102,11 @@ export default async function ProductDetailPage({ params }: ProductPageProps) {
   const mainImage = product.image || galleryImages[0];
   const heroImage = product.applicationImage || galleryImages[1] || mainImage;
   const productImageCaption = getProductImageCaption(product);
+  const sampleRequestUrl = getWhatsAppUrl(
+    siteContent,
+    "tr",
+    `Merhaba, ${product.code} ${product.name} ürünü için numune ve proje bilgisi almak istiyorum.`,
+  );
   const primaryVisualSeoImage = {
     alt: getProductPrimaryImageAlt(product),
     caption: productImageCaption,
@@ -196,7 +208,14 @@ export default async function ProductDetailPage({ params }: ProductPageProps) {
           </div>
 
           <div className="detail-actions">
-            <Link href="/#contact">Numune iste</Link>
+            <a
+              aria-label={`${product.code} ${product.name} için WhatsApp üzerinden numune iste`}
+              href={sampleRequestUrl}
+              rel="noreferrer"
+              target="_blank"
+            >
+              WhatsApp'tan numune iste
+            </a>
           </div>
 
           <dl className="detail-specs">

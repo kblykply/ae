@@ -211,9 +211,15 @@ export function normalizeSiteContent(value: unknown): SiteContent {
   };
 }
 
-export function getWhatsAppUrl(siteContent: SiteContent, language: Language) {
+export function getWhatsAppUrl(
+  siteContent: SiteContent,
+  language: Language,
+  messageOverride?: string,
+) {
   const phone = siteContent.whatsappNumber.replace(/\D/g, "");
-  const message = encodeURIComponent(siteContent.whatsappMessage[language]);
+  const message = encodeURIComponent(
+    messageOverride || siteContent.whatsappMessage[language],
+  );
 
   return `https://wa.me/${phone}?text=${message}`;
 }
