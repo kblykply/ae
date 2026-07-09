@@ -843,13 +843,27 @@ export function AdminPanel({
                   {selectedProduct.code} · {selectedProduct.name}
                 </strong>
               </div>
-              <a
-                href={`/products/${selectedProduct.slug}`}
-                rel="noreferrer"
-                target="_blank"
-              >
-                Canlı önizleme
-              </a>
+              <div className="admin-detail-actions">
+                <a
+                  href={`/products/${selectedProduct.slug}`}
+                  rel="noreferrer"
+                  target="_blank"
+                >
+                  Canlı önizleme
+                </a>
+                <button
+                  className="admin-detail-save-button"
+                  disabled={busy || !hasUnsavedChanges}
+                  onClick={saveProducts}
+                  type="button"
+                >
+                  {busy
+                    ? "Kaydediliyor..."
+                    : hasUnsavedChanges
+                      ? "Değişiklikleri kaydet"
+                      : "Kaydedildi"}
+                </button>
+              </div>
             </header>
 
             <section className="admin-live-product-editor">
