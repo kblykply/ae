@@ -712,19 +712,35 @@ export function AdminPanel({
         </div>
 
         <div className="admin-toolbar">
+          <button
+            className="admin-primary-action"
+            disabled={busy || !hasUnsavedChanges}
+            onClick={saveProducts}
+            type="button"
+          >
+            {busy
+              ? "Kaydediliyor..."
+              : hasUnsavedChanges
+                ? "Kataloğu kaydet"
+                : "Kaydedildi"}
+          </button>
           <button onClick={addProduct} type="button">
-            Ekle
+            Yeni ürün
           </button>
           <button onClick={duplicateProduct} type="button">
             Kopyala
           </button>
-          <button onClick={deleteProduct} type="button">
+          <button
+            className="admin-danger-action"
+            onClick={deleteProduct}
+            type="button"
+          >
             Sil
           </button>
-          <button onClick={exportProducts} type="button">
+          <button className="admin-secondary-action" onClick={exportProducts} type="button">
             JSON dışa aktar
           </button>
-          <label className="admin-import-button">
+          <label className="admin-import-button admin-secondary-action">
             JSON içe aktar
             <input
               accept="application/json"
@@ -735,10 +751,12 @@ export function AdminPanel({
               type="file"
             />
           </label>
-          <button disabled={busy} onClick={saveProducts} type="button">
-            {busy ? "Kaydediliyor..." : "Kataloğu kaydet"}
-          </button>
-          <button disabled={busy} onClick={resetProducts} type="button">
+          <button
+            className="admin-reset-action"
+            disabled={busy}
+            onClick={resetProducts}
+            type="button"
+          >
             Sıfırla
           </button>
         </div>

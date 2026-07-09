@@ -324,19 +324,35 @@ export function SiteContentAdminPanel({
         </div>
 
         <div className="admin-toolbar">
+          <button
+            className="admin-primary-action"
+            disabled={busy || !hasUnsavedChanges}
+            onClick={saveSiteContent}
+            type="button"
+          >
+            {busy
+              ? "Kaydediliyor..."
+              : hasUnsavedChanges
+                ? "İçeriği kaydet"
+                : "Kaydedildi"}
+          </button>
           <button onClick={addSlide} type="button">
             Slider ekle
           </button>
           <button onClick={duplicateSlide} type="button">
             Kopyala
           </button>
-          <button onClick={deleteSlide} type="button">
+          <button
+            className="admin-danger-action"
+            onClick={deleteSlide}
+            type="button"
+          >
             Sil
           </button>
-          <button onClick={exportSiteContent} type="button">
+          <button className="admin-secondary-action" onClick={exportSiteContent} type="button">
             JSON dışa aktar
           </button>
-          <label className="admin-import-button">
+          <label className="admin-import-button admin-secondary-action">
             JSON içe aktar
             <input
               accept="application/json"
@@ -347,10 +363,12 @@ export function SiteContentAdminPanel({
               type="file"
             />
           </label>
-          <button disabled={busy} onClick={saveSiteContent} type="button">
-            {busy ? "Kaydediliyor..." : "İçeriği kaydet"}
-          </button>
-          <button disabled={busy} onClick={resetSiteContent} type="button">
+          <button
+            className="admin-reset-action"
+            disabled={busy}
+            onClick={resetSiteContent}
+            type="button"
+          >
             Sıfırla
           </button>
         </div>

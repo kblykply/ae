@@ -214,7 +214,7 @@ export default async function ProductDetailPage({ params }: ProductPageProps) {
               rel="noreferrer"
               target="_blank"
             >
-              WhatsApp'tan numune iste
+              WhatsApp üzerinden numune iste
             </a>
           </div>
 

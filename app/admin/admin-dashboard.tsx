@@ -81,6 +81,16 @@ export function AdminDashboard({
     "blog",
     "requests",
   ];
+  const publishedPostCount = blogPosts.filter(
+    (post) => post.status === "published",
+  ).length;
+  const sectionBadges: Record<DashboardSection, string> = {
+    blog: `${publishedPostCount}/${blogPosts.length}`,
+    homepage: `${siteContent.heroSlides.length}`,
+    overview: "",
+    products: `${products.length}`,
+    requests: `${leadStats.new}`,
+  };
 
   return (
     <main className="admin-dashboard">
@@ -105,7 +115,12 @@ export function AdminDashboard({
               onClick={() => setActiveSection(section)}
               type="button"
             >
-              <span>{sectionLabels[section]}</span>
+              <span className="dashboard-nav-row">
+                <span>{sectionLabels[section]}</span>
+                {sectionBadges[section] ? (
+                  <strong>{sectionBadges[section]}</strong>
+                ) : null}
+              </span>
               <small>{sectionDescriptions[section]}</small>
             </button>
           ))}
@@ -155,8 +170,7 @@ export function AdminDashboard({
               <span>{blogPosts.length}</span>
               <h2>Blog yazıları</h2>
               <p>
-                {blogPosts.filter((post) => post.status === "published").length}{" "}
-                yazı yayında.
+                {publishedPostCount} yazı yayında.
               </p>
             </article>
             <article>

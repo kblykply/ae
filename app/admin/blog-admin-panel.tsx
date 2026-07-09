@@ -314,16 +314,26 @@ export function BlogAdminPanel({ initialPosts }: BlogAdminPanelProps) {
         </div>
 
         <div className="admin-toolbar admin-toolbar-compact">
+          <button
+            className="admin-primary-action"
+            disabled={busy}
+            onClick={savePosts}
+            type="button"
+          >
+            {busy ? "Kaydediliyor..." : "Kaydet"}
+          </button>
           <button disabled={busy} onClick={addPost} type="button">
             Yeni yazı
           </button>
           <button disabled={busy} onClick={duplicatePost} type="button">
             Kopyala
           </button>
-          <button disabled={busy} onClick={savePosts} type="button">
-            Kaydet
-          </button>
-          <button disabled={busy} onClick={resetPosts} type="button">
+          <button
+            className="admin-reset-action"
+            disabled={busy}
+            onClick={resetPosts}
+            type="button"
+          >
             Sıfırla
           </button>
         </div>

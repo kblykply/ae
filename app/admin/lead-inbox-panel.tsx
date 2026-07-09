@@ -253,13 +253,23 @@ export function LeadInboxPanel({ initialLeads }: LeadInboxPanelProps) {
         </div>
 
         <div className="admin-toolbar admin-toolbar-compact">
-          <button disabled={busy} onClick={refreshLeads} type="button">
+          <button
+            className="admin-primary-action"
+            disabled={busy}
+            onClick={refreshLeads}
+            type="button"
+          >
             Yenile
           </button>
-          <button onClick={exportLeads} type="button">
+          <button className="admin-secondary-action" onClick={exportLeads} type="button">
             JSON dışa aktar
           </button>
-          <button disabled={busy || leads.length === 0} onClick={resetLeads} type="button">
+          <button
+            className="admin-danger-action"
+            disabled={busy || leads.length === 0}
+            onClick={resetLeads}
+            type="button"
+          >
             Temizle
           </button>
         </div>
