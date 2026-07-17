@@ -12,7 +12,6 @@ import {
 
 const catalogFilePath = path.join(process.cwd(), "data", "catalog-products.json");
 
-const categorySlugs = productCategories.map((category) => category.slug);
 const backendBaseUrl = (process.env.BACKEND_URL ?? "").replace(/\/$/, "");
 const backendAdminToken =
   process.env.BACKEND_ADMIN_TOKEN ??
@@ -42,11 +41,23 @@ export const createProductSlug = (value: string) =>
     .replace(/[^a-z0-9]+/g, "-")
     .replace(/^-|-$/g, "");
 
-const isProductCategorySlug = (
+const toProductCategorySlug = (
   value: unknown,
-): value is ProductCategorySlug =>
-  typeof value === "string" &&
-  categorySlugs.includes(value as ProductCategorySlug);
+  fallback: ProductCategorySlug,
+): ProductCategorySlug => createProductSlug(toText(value)) || fallback;
+
+const toCategoryFallbackLabel = (slug: string): LocalizedText => {
+  const label = slug
+    .split("-")
+    .filter(Boolean)
+    .map((part) => part.charAt(0).toLocaleUpperCase("tr") + part.slice(1))
+    .join(" ");
+
+  return {
+    en: label || "New Category",
+    tr: label || "Yeni Kategori",
+  };
+};
 
 const toText = (value: unknown, fallback = "") =>
   typeof value === "string" ? value.trim() : fallback;
@@ -121,12 +132,11 @@ const normalizeProduct = (
 ): Product => {
   const candidate = value as Partial<Product> | undefined;
   const fallback = seedProducts[index] ?? seedProducts[0];
-  const category = isProductCategorySlug(candidate?.category)
-    ? candidate.category
-    : fallback.category;
+  const category = toProductCategorySlug(candidate?.category, fallback.category);
   const categoryInfo =
-    productCategories.find((item) => item.slug === category) ??
-    productCategories[0];
+    productCategories.find((item) => item.slug === category);
+  const categoryLabelFallback =
+    categoryInfo?.label ?? toCategoryFallbackLabel(category);
   const code = toText(candidate?.code, fallback.code || `AE-${index + 1}`);
   const name = toText(candidate?.name, fallback.name || code);
   const baseSlug =
@@ -159,8 +169,11 @@ const normalizeProduct = (
     code,
     name,
     category,
-    categoryLabel: toLocalizedText(candidate?.categoryLabel, categoryInfo.label),
-    collection: toLocalizedText(candidate?.collection, fallback.collection),
+    categoryLabel: toLocalizedText(candidate?.categoryLabel, categoryLabelFallback),
+    collection: toLocalizedText(
+      candidate?.collection,
+      categoryInfo?.label ?? fallback.collection,
+    ),
     description: toLocalizedText(candidate?.description, fallback.description),
     image,
     applicationImage,
@@ -177,7 +190,10 @@ const normalizeProduct = (
       candidate?.technicalSpecs,
       fallback.technicalSpecs,
     ),
-    sourceUrl: toText(candidate?.sourceUrl, fallback.sourceUrl),
+    sourceUrl: toText(
+      candidate?.sourceUrl,
+      categoryInfo?.sourceUrl ?? fallback.sourceUrl,
+    ),
     accent: toText(candidate?.accent, fallback.accent || "#20242f"),
   };
 };

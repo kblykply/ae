@@ -4,15 +4,14 @@ import Image from "next/image";
 import { useMemo, useState } from "react";
 import type { CatalogConnectionStatus } from "../data/catalog-store";
 import {
-  productCategories,
+  getProductCategories,
   type Language,
   type LocalizedText,
   type Product,
+  type ProductCategory,
   type ProductCategorySlug,
   type ProductSpec,
 } from "../data/products";
-
-type ProductCategory = (typeof productCategories)[number];
 
 type AdminPanelProps = {
   catalogStatus: CatalogConnectionStatus;
@@ -132,6 +131,7 @@ export function AdminPanel({
   initialProducts,
 }: AdminPanelProps) {
   const [products, setProducts] = useState(initialProducts);
+  const [managedCategories, setManagedCategories] = useState(categories);
   const [selectedIndex, setSelectedIndex] = useState(0);
   const [busy, setBusy] = useState(false);
   const [categoryFilter, setCategoryFilter] = useState<ProductCategorySlug | "">(
@@ -139,6 +139,7 @@ export function AdminPanel({
   );
   const [hasUnsavedChanges, setHasUnsavedChanges] = useState(false);
   const [listQuery, setListQuery] = useState("");
+  const [newCategoryName, setNewCategoryName] = useState("");
   const [productView, setProductView] = useState<ProductView>("listing");
   const [uploadingImageKey, setUploadingImageKey] = useState("");
   const [status, setStatus] = useState<SaveStatus>({
@@ -147,7 +148,7 @@ export function AdminPanel({
   });
   const selectedProduct = products[selectedIndex] ?? products[0];
   const selectedCategory = selectedProduct
-    ? categories.find((category) => category.slug === selectedProduct.category)
+    ? managedCategories.find((category) => category.slug === selectedProduct.category)
     : undefined;
   const editableGalleryImages = selectedProduct
     ? getEditableGalleryImages(selectedProduct)
@@ -178,12 +179,12 @@ export function AdminPanel({
 
   const catalogStats = useMemo(
     () =>
-      categories.map((category) => ({
+      managedCategories.map((category) => ({
         label: category.label.tr,
         total: products.filter((product) => product.category === category.slug)
           .length,
       })),
-    [categories, products],
+    [managedCategories, products],
   );
   const visibleProducts = useMemo(() => {
     const normalizedQuery = listQuery.trim().toLocaleLowerCase("tr");
@@ -464,10 +465,66 @@ export function AdminPanel({
     }));
   };
 
+  const addCategory = () => {
+    const categoryName = newCategoryName.trim();
+    const categorySlug = createSlug(categoryName);
+
+    if (!categoryName || !categorySlug) {
+      setStatus({
+        tone: "error",
+        text: "Kategori oluşturmak için kategori adı yazın.",
+      });
+      return;
+    }
+
+    if (managedCategories.some((category) => category.slug === categorySlug)) {
+      setCategoryFilter(categorySlug);
+      setStatus({
+        tone: "error",
+        text: "Bu kategori zaten var. Listeden seçip ürün ekleyebilirsiniz.",
+      });
+      return;
+    }
+
+    const category: ProductCategory = {
+      description: {
+        en: `${categoryName} products for North Cyprus decoration projects.`,
+        tr: `${categoryName} ürünleri Kuzey Kıbrıs dekorasyon projeleri için listelenir.`,
+      },
+      label: {
+        en: categoryName,
+        tr: categoryName,
+      },
+      shortLabel: {
+        en: categoryName,
+        tr: categoryName,
+      },
+      slug: categorySlug,
+      sourceUrl: "",
+    };
+    const newProduct = {
+      ...createNewProduct(category),
+      name: `${categoryName} Ürün`,
+      slug: createSlug(`${categoryName} ürün ${Date.now().toString().slice(-5)}`),
+    };
+
+    setManagedCategories((currentCategories) => [...currentCategories, category]);
+    setProducts((currentProducts) => [newProduct, ...currentProducts]);
+    setSelectedIndex(0);
+    setCategoryFilter(categorySlug);
+    setProductView("detail");
+    setNewCategoryName("");
+    setHasUnsavedChanges(true);
+    setStatus({
+      tone: "idle",
+      text: `${categoryName} kategorisi ve ilk ürün taslağı eklendi.`,
+    });
+  };
+
   const updateCategory = (categorySlug: ProductCategorySlug) => {
     const nextCategory =
-      categories.find((category) => category.slug === categorySlug) ??
-      categories[0];
+      managedCategories.find((category) => category.slug === categorySlug) ??
+      managedCategories[0];
 
     updateSelectedProduct((product) => ({
       ...product,
@@ -480,7 +537,7 @@ export function AdminPanel({
 
   const addProduct = () => {
     setProducts((currentProducts) => [
-      createNewProduct(categories[0]),
+      createNewProduct(managedCategories[0]),
       ...currentProducts,
     ]);
     setSelectedIndex(0);
@@ -562,7 +619,10 @@ export function AdminPanel({
         throw new Error("İçe aktarım dosyası ürün listesi içermeli.");
       }
 
-      setProducts(importedProducts as Product[]);
+      const nextProducts = importedProducts as Product[];
+
+      setProducts(nextProducts);
+      setManagedCategories(getProductCategories(nextProducts));
       setSelectedIndex(0);
       setProductView("listing");
       setHasUnsavedChanges(true);
@@ -601,6 +661,7 @@ export function AdminPanel({
       }
 
       setProducts(body.products);
+      setManagedCategories(getProductCategories(body.products));
       setSelectedIndex(Math.min(selectedIndex, body.products.length - 1));
       setHasUnsavedChanges(false);
       setStatus({ tone: "success", text: "Katalog kaydedildi" });
@@ -643,6 +704,7 @@ export function AdminPanel({
       }
 
       setProducts(body.products);
+      setManagedCategories(getProductCategories(body.products));
       setSelectedIndex(0);
       setProductView("listing");
       setHasUnsavedChanges(false);
@@ -761,6 +823,30 @@ export function AdminPanel({
           </button>
         </div>
 
+        <form
+          className="admin-category-create"
+          onSubmit={(event) => {
+            event.preventDefault();
+            addCategory();
+          }}
+        >
+          <div>
+            <strong>Yeni kategori oluştur</strong>
+            <span>
+              Kategori eklenince içinde düzenlenebilir ilk ürün taslağı açılır.
+            </span>
+          </div>
+          <label>
+            Kategori adı
+            <input
+              onChange={(event) => setNewCategoryName(event.target.value)}
+              placeholder="Örn. Marble Sheet, Akustik Panel, Lambri"
+              value={newCategoryName}
+            />
+          </label>
+          <button type="submit">Kategori ekle</button>
+        </form>
+
         <div className="admin-list-filters">
           <label>
             Ürün ara
@@ -779,7 +865,7 @@ export function AdminPanel({
               value={categoryFilter}
             >
               <option value="">Tüm kategoriler</option>
-              {categories.map((category) => (
+              {managedCategories.map((category) => (
                 <option key={category.slug} value={category.slug}>
                   {category.label.tr}
                 </option>
@@ -1055,7 +1141,7 @@ export function AdminPanel({
                       }
                       value={selectedProduct.category}
                     >
-                      {categories.map((category) => (
+                      {managedCategories.map((category) => (
                         <option key={category.slug} value={category.slug}>
                           {category.label.tr}
                         </option>

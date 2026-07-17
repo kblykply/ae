@@ -6,7 +6,7 @@ import {
   getProductVisualSeoImages,
   homeVisualSeoImages,
 } from "../data/image-seo";
-import { productCategories } from "../data/products";
+import { getProductCategories } from "../data/products";
 import { seoLandingPages } from "../data/seo-landing-pages";
 import { absoluteUrl, defaultOgImage } from "../seo";
 
@@ -54,6 +54,7 @@ export async function GET() {
     getManagedProducts(),
     getManagedBlogPosts(),
   ]);
+  const productCategories = getProductCategories(products);
 
   const categoryEntries = productCategories.map((category) => {
     const heroProduct = products.find(

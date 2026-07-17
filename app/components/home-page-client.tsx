@@ -2,20 +2,16 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { useState, type FormEvent } from "react";
+import { useMemo, useState, type FormEvent } from "react";
 import { SiteFooter } from "./site-footer";
 import {
   HeaderDesktopNavigation,
   HeaderMobileNavigation,
 } from "./header-navigation";
 import type { SiteContent } from "../data/site-content";
-import {
-  productCategories,
-  type Product,
-} from "../data/products";
+import type { Product, ProductCategory } from "../data/products";
 
 type Language = "en" | "tr";
-type ProductCategory = (typeof productCategories)[number];
 
 type HomePageClientProps = {
   categories: ProductCategory[];
@@ -77,6 +73,14 @@ const translations = {
     viewAll: "View all",
     catalogEyebrow: "Product catalog",
     catalogTitle: "SPC flooring and SPC wall panel collections for Cyprus projects.",
+    allProducts: "All products",
+    catalogCategoryLabel: "Category",
+    catalogEmptyText:
+      "No products match this search. Try a different category or keyword.",
+    catalogFilterLabel: "Filter products",
+    catalogSearchLabel: "Search catalog",
+    catalogSearchPlaceholder: "Search code, color, panel, trim...",
+    catalogSummary: "products shown",
     promoKicker: "SPC SYSTEM",
     promoTitle: "Floors, walls and panels for one clean finish",
     promoBody: "Waterproof panels for North Cyprus homes and commercial spaces.",
@@ -284,6 +288,14 @@ const translations = {
     catalogEyebrow: "Ürün kataloğu",
     catalogTitle:
       "Kuzey Kıbrıs projeleri için SPC parke ve SPC duvar paneli koleksiyonları.",
+    allProducts: "Tüm ürünler",
+    catalogCategoryLabel: "Kategori",
+    catalogEmptyText:
+      "Bu arama ile eşleşen ürün yok. Farklı kategori veya kelime deneyin.",
+    catalogFilterLabel: "Ürünleri filtrele",
+    catalogSearchLabel: "Katalogda ara",
+    catalogSearchPlaceholder: "Kod, renk, panel, çıta ara...",
+    catalogSummary: "ürün gösteriliyor",
     promoKicker: "SPC SİSTEM",
     promoTitle: "Zemin, duvar ve panelde tek temiz bitiş",
     promoBody:
@@ -461,6 +473,28 @@ const initialRequestForm: RequestForm = {
   name: "",
 };
 
+const normalizeCatalogText = (value: string) =>
+  value
+    .toLocaleLowerCase("tr")
+    .normalize("NFKD")
+    .replace(/[\u0300-\u036f]/g, "");
+
+const getCatalogProductText = (product: Product) =>
+  normalizeCatalogText(
+    [
+      product.code,
+      product.name,
+      product.categoryLabel.en,
+      product.categoryLabel.tr,
+      product.collection.en,
+      product.collection.tr,
+      product.description.en,
+      product.description.tr,
+      ...product.specs.en,
+      ...product.specs.tr,
+    ].join(" "),
+  );
+
 export function HomePageClient({
   categories,
   products,
@@ -468,6 +502,8 @@ export function HomePageClient({
 }: HomePageClientProps) {
   const [activeSlide, setActiveSlide] = useState(0);
   const [language, setLanguage] = useState<Language>("tr");
+  const [catalogCategory, setCatalogCategory] = useState("");
+  const [catalogQuery, setCatalogQuery] = useState("");
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [requestForm, setRequestForm] = useState(initialRequestForm);
   const [requestBusy, setRequestBusy] = useState(false);
@@ -478,12 +514,28 @@ export function HomePageClient({
   const heroSlides = siteContent.heroSlides;
   const currentSlide = heroSlides[activeSlide] ?? heroSlides[0];
   const copy = translations[language];
-  const flooringProducts = products.filter(
-    (product) => product.category === "spc-parke",
+  const featuredProducts = products.slice(0, 3);
+  const catalogCategories = categories.filter((category) =>
+    products.some((product) => product.category === category.slug),
   );
-  const wallProducts = products.filter(
-    (product) => product.category === "spc-duvar-panelleri",
-  );
+  const filteredCatalogProducts = useMemo(() => {
+    const queryTerms = normalizeCatalogText(catalogQuery)
+      .split(/\s+/)
+      .filter(Boolean);
+
+    return products.filter((product) => {
+      const matchesCategory = catalogCategory
+        ? product.category === catalogCategory
+        : true;
+      const productText = getCatalogProductText(product);
+      const matchesQuery = queryTerms.every((term) =>
+        productText.includes(term),
+      );
+
+      return matchesCategory && matchesQuery;
+    });
+  }, [catalogCategory, catalogQuery, products]);
+  const panelProducts = products.slice(0, 6);
 
   const goToPreviousSlide = () => {
     setActiveSlide((current) =>
@@ -797,7 +849,7 @@ export function HomePageClient({
 
       <section className="catalog-layout" id="products">
         <div className="product-grid">
-          {flooringProducts.slice(0, 3).map((product) => (
+          {featuredProducts.map((product) => (
             <article className="product-card" key={product.code}>
               <div className="product-image">
                 <Image
@@ -865,55 +917,93 @@ export function HomePageClient({
             <p className="eyebrow">{copy.catalogEyebrow}</p>
             <h2>{copy.catalogTitle}</h2>
           </div>
-          <div className="category-pills">
-            {categories.map((category) => (
-              <Link href={`/category/${category.slug}`} key={category.slug}>
-                {category.shortLabel[language]}
+        </div>
+
+        <div className="catalog-filter-panel" aria-label={copy.catalogFilterLabel}>
+          <label>
+            <span>{copy.catalogSearchLabel}</span>
+            <input
+              onChange={(event) => setCatalogQuery(event.target.value)}
+              placeholder={copy.catalogSearchPlaceholder}
+              type="search"
+              value={catalogQuery}
+            />
+          </label>
+          <label>
+            <span>{copy.catalogCategoryLabel}</span>
+            <select
+              onChange={(event) => setCatalogCategory(event.target.value)}
+              value={catalogCategory}
+            >
+              <option value="">{copy.allProducts}</option>
+              {catalogCategories.map((category) => (
+                <option key={category.slug} value={category.slug}>
+                  {category.label[language]}
+                </option>
+              ))}
+            </select>
+          </label>
+        </div>
+
+        <div className="category-pills" aria-label={copy.catalogCategoryLabel}>
+          <button
+            className={catalogCategory === "" ? "is-active" : ""}
+            onClick={() => setCatalogCategory("")}
+            type="button"
+          >
+            {copy.allProducts}
+          </button>
+          {catalogCategories.map((category) => (
+            <button
+              className={catalogCategory === category.slug ? "is-active" : ""}
+              key={category.slug}
+              onClick={() => setCatalogCategory(category.slug)}
+              type="button"
+            >
+              {category.shortLabel[language]}
+            </button>
+          ))}
+        </div>
+
+        <div className="catalog-result-meta">
+          <span>
+            {filteredCatalogProducts.length} {copy.catalogSummary}
+          </span>
+          {catalogCategory ? (
+            <Link href={`/category/${catalogCategory}`}>{copy.viewAll}</Link>
+          ) : null}
+        </div>
+
+        {filteredCatalogProducts.length > 0 ? (
+          <div className="directory-grid all-products-grid">
+            {filteredCatalogProducts.map((product) => (
+              <Link
+                className="directory-card"
+                href={`/products/${product.slug}`}
+                key={product.slug}
+              >
+                <span className="directory-card-image">
+                  <Image
+                    alt={`${product.name} ${product.code}`}
+                    fill
+                    sizes="(max-width: 900px) 50vw, 18vw"
+                    src={product.image}
+                  />
+                </span>
+                <span className="directory-card-body">
+                  <small>{product.code}</small>
+                  <strong>{product.name}</strong>
+                  <span>{product.collection[language]}</span>
+                </span>
               </Link>
             ))}
           </div>
-        </div>
-
-        {categories.map((category) => {
-          const categoryProducts = products
-            .filter((product) => product.category === category.slug)
-            .slice(0, 10);
-
-          return (
-            <div className="directory-block" key={category.slug}>
-              <div className="directory-block-head">
-                <div>
-                  <p>{category.description[language]}</p>
-                  <h3>{category.label[language]}</h3>
-                </div>
-                <Link href={`/category/${category.slug}`}>{copy.viewAll}</Link>
-              </div>
-              <div className="directory-grid">
-                {categoryProducts.map((product) => (
-                  <Link
-                    className="directory-card"
-                    href={`/products/${product.slug}`}
-                    key={product.code}
-                  >
-                    <span className="directory-card-image">
-                      <Image
-                        alt={`${product.name} ${product.code}`}
-                        fill
-                        sizes="(max-width: 900px) 50vw, 18vw"
-                        src={product.image}
-                      />
-                    </span>
-                    <span className="directory-card-body">
-                      <small>{product.code}</small>
-                      <strong>{product.name}</strong>
-                      <span>{product.collection[language]}</span>
-                    </span>
-                  </Link>
-                ))}
-              </div>
-            </div>
-          );
-        })}
+        ) : (
+          <div className="catalog-empty-state">
+            <h3>{copy.allProducts}</h3>
+            <p>{copy.catalogEmptyText}</p>
+          </div>
+        )}
       </section>
 
       <section className="wide-showcase" id="projects">
@@ -1063,7 +1153,7 @@ export function HomePageClient({
         </div>
 
         <div className="panel-grid">
-          {wallProducts.slice(0, 3).map((product) => (
+          {panelProducts.slice(0, 3).map((product) => (
             <article className="panel-card" key={product.code}>
               <Image
                 alt={`${product.name} ${product.code}`}

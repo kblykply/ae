@@ -6,7 +6,7 @@ import {
   resetManagedProducts,
   saveManagedProducts,
 } from "../../../data/catalog-store";
-import { productCategories } from "../../../data/products";
+import { getProductCategories } from "../../../data/products";
 
 export const dynamic = "force-dynamic";
 
@@ -28,7 +28,7 @@ export async function GET() {
   const products = await getManagedProducts();
 
   return NextResponse.json({
-    categories: productCategories,
+    categories: getProductCategories(products),
     products,
   });
 }

@@ -1,6 +1,6 @@
 export type Language = "en" | "tr";
 
-export type ProductCategorySlug = "spc-parke" | "spc-duvar-panelleri";
+export type ProductCategorySlug = string;
 
 export type LocalizedText = Record<Language, string>;
 
@@ -24,6 +24,14 @@ export type Product = {
   technicalSpecs: ProductSpec[];
   sourceUrl: string;
   accent: string;
+};
+
+export type ProductCategory = {
+  description: LocalizedText;
+  label: LocalizedText;
+  shortLabel: LocalizedText;
+  slug: ProductCategorySlug;
+  sourceUrl: string;
 };
 
 const kermitImage = (path: string) => `https://kermitfloor.com${path}`;
@@ -179,7 +187,7 @@ export const products: Product[] = [
   ...wallNames.map(createWallProduct),
 ];
 
-export const productCategories = [
+export const productCategories: ProductCategory[] = [
   {
     slug: "spc-parke",
     label: { en: "SPC Flooring", tr: "SPC Parke" },
@@ -200,7 +208,64 @@ export const productCategories = [
     },
     sourceUrl: wallSource,
   },
-] as const;
+] satisfies ProductCategory[];
+
+const toCategoryFallbackLabel = (slug: string): LocalizedText => {
+  const label = slug
+    .split("-")
+    .filter(Boolean)
+    .map((part) => part.charAt(0).toLocaleUpperCase("tr") + part.slice(1))
+    .join(" ");
+
+  return {
+    en: label || "New Category",
+    tr: label || "Yeni Kategori",
+  };
+};
+
+export const getProductCategories = (
+  sourceProducts: Product[] = products,
+): ProductCategory[] => {
+  const categoryMap = new Map<string, ProductCategory>();
+
+  productCategories.forEach((category) => {
+    categoryMap.set(category.slug, category);
+  });
+
+  sourceProducts.forEach((product) => {
+    const slug = product.category.trim();
+
+    if (!slug || categoryMap.has(slug)) {
+      return;
+    }
+
+    const fallbackLabel = toCategoryFallbackLabel(slug);
+    const label = {
+      en: product.categoryLabel.en || product.collection.en || fallbackLabel.en,
+      tr: product.categoryLabel.tr || product.collection.tr || fallbackLabel.tr,
+    };
+
+    categoryMap.set(slug, {
+      description: {
+        en:
+          product.description.en ||
+          `${label.en} products for North Cyprus decoration projects.`,
+        tr:
+          product.description.tr ||
+          `${label.tr} ürünleri Kuzey Kıbrıs dekorasyon projeleri için listelenir.`,
+      },
+      label,
+      shortLabel: label,
+      slug,
+      sourceUrl: product.sourceUrl,
+    });
+  });
+
+  return Array.from(categoryMap.values()).filter((category) =>
+    productCategories.some((item) => item.slug === category.slug) ||
+    sourceProducts.some((product) => product.category === category.slug),
+  );
+};
 
 export const getProductsByCategory = (category: ProductCategorySlug) =>
   products.filter((product) => product.category === category);
@@ -208,8 +273,13 @@ export const getProductsByCategory = (category: ProductCategorySlug) =>
 export const getProductBySlug = (slug: string) =>
   products.find((product) => product.slug === slug);
 
-export const getCategoryBySlug = (slug: string) =>
-  productCategories.find((category) => category.slug === slug);
+export const getCategoryBySlug = (
+  slug: string,
+  sourceProducts: Product[] = products,
+) =>
+  getProductCategories(sourceProducts).find(
+    (category) => category.slug === slug,
+  );
 
 export const getRelatedProducts = (product: Product) =>
   getProductsByCategory(product.category)

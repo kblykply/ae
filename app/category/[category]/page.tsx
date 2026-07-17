@@ -4,7 +4,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { CatalogHeader } from "../../components/catalog-header";
 import { SiteFooter } from "../../components/site-footer";
-import { getManagedProductsByCategory } from "../../data/catalog-store";
+import { getManagedProducts } from "../../data/catalog-store";
 import {
   createWebPageImageJsonLd,
   getCategoryVisualSeoImage,
@@ -12,7 +12,7 @@ import {
 } from "../../data/image-seo";
 import {
   getCategoryBySlug,
-  type ProductCategorySlug,
+  type ProductCategory,
 } from "../../data/products";
 import {
   createBreadcrumbJsonLd,
@@ -27,15 +27,14 @@ type CategoryPageProps = {
 
 export const dynamic = "force-dynamic";
 
-const categorySeoContent: Record<
-  ProductCategorySlug,
-  {
-    body: string;
-    description: string;
-    tags: string[];
-    title: string;
-  }
-> = {
+type CategorySeoContent = {
+  body: string;
+  description: string;
+  tags: string[];
+  title: string;
+};
+
+const categorySeoContent: Partial<Record<string, CategorySeoContent>> = {
   "spc-duvar-panelleri": {
     body: "Banyo, mutfak, ıslak hacim, otel odası, mağaza ve konut projeleri için mermer, taş, beton ve ahşap görünümlü SPC duvar panelleri seçebilirsiniz. Lefkoşa, Girne, Gazimağusa, İskele ve tüm KKTC projelerinde numune ve metraj planlaması yapılır.",
     description:
@@ -62,16 +61,32 @@ const categorySeoContent: Record<
   },
 };
 
+const getCategorySeoContent = (
+  categoryInfo: ProductCategory,
+): CategorySeoContent =>
+  categorySeoContent[categoryInfo.slug] ?? {
+    body: `${categoryInfo.label.tr} kategorisindeki ürünler Kuzey Kıbrıs ev, villa, ofis, mağaza, otel ve ticari dekorasyon projeleri için incelenebilir. Ürünleri kod, renk, malzeme ve uygulama ihtiyacına göre karşılaştırıp numune talebi oluşturabilirsiniz.`,
+    description: `${categoryInfo.label.tr} ürünleri için Kuzey Kıbrıs ve KKTC genelinde numune, metraj ve dekorasyon uygulama desteği.`,
+    tags: [
+      `${categoryInfo.label.tr} Kıbrıs`,
+      `${categoryInfo.label.tr} KKTC`,
+      "Dekorasyon malzemeleri",
+      "Numune ve uygulama desteği",
+    ],
+    title: `${categoryInfo.label.tr} ürünleri ve dekorasyon seçenekleri.`,
+  };
+
 export async function generateMetadata({
   params,
 }: CategoryPageProps): Promise<Metadata> {
   const { category } = await params;
-  const categoryInfo = getCategoryBySlug(category);
+  const products = await getManagedProducts();
+  const categoryInfo = getCategoryBySlug(category, products);
 
   if (!categoryInfo) {
     return {};
   }
-  const categorySeo = categorySeoContent[categoryInfo.slug];
+  const categorySeo = getCategorySeoContent(categoryInfo);
 
   return {
     title: `${categoryInfo.label.tr} Kıbrıs | SPC Panel ve Dekorasyon`,
@@ -98,19 +113,20 @@ export async function generateMetadata({
 
 export default async function CategoryPage({ params }: CategoryPageProps) {
   const { category } = await params;
-  const categoryInfo = getCategoryBySlug(category);
+  const allProducts = await getManagedProducts();
+  const categoryInfo = getCategoryBySlug(category, allProducts);
 
   if (!categoryInfo) {
     notFound();
   }
 
-  const products = await getManagedProductsByCategory(
-    category as ProductCategorySlug,
+  const products = allProducts.filter(
+    (product) => product.category === categoryInfo.slug,
   );
   const heroProduct = products[0];
   const heroImage =
     heroProduct?.applicationImage ?? "/images/kermit-floor-application.jpg";
-  const categorySeo = categorySeoContent[categoryInfo.slug];
+  const categorySeo = getCategorySeoContent(categoryInfo);
   const visualSeoImage = getCategoryVisualSeoImage(categoryInfo, heroImage);
   const jsonLd = [
     createBreadcrumbJsonLd([

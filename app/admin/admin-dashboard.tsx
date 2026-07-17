@@ -13,7 +13,7 @@ import type { CatalogConnectionStatus } from "../data/catalog-store";
 import type { Lead } from "../data/leads-store";
 import type { SiteContent } from "../data/site-content";
 import {
-  productCategories,
+  getProductCategories,
   type Product,
 } from "../data/products";
 
@@ -57,14 +57,18 @@ export function AdminDashboard({
 }: AdminDashboardProps) {
   const [activeSection, setActiveSection] =
     useState<DashboardSection>("overview");
+  const managedCategories = useMemo(
+    () => getProductCategories(products),
+    [products],
+  );
   const productStats = useMemo(
     () =>
-      productCategories.map((category) => ({
+      managedCategories.map((category) => ({
         label: category.label.tr,
         total: products.filter((product) => product.category === category.slug)
           .length,
       })),
-    [products],
+    [managedCategories, products],
   );
   const leadStats = useMemo(
     () => ({
@@ -248,7 +252,7 @@ export function AdminDashboard({
         >
           <AdminPanel
             catalogStatus={catalogStatus}
-            categories={[...productCategories]}
+            categories={managedCategories}
             initialProducts={products}
           />
         </section>

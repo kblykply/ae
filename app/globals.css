@@ -2893,17 +2893,109 @@ img {
 }
 
 .category-pills a,
+.category-pills button,
 .directory-block-head a {
   align-items: center;
   background: #20242f;
+  border: 0;
   border-radius: 999px;
   color: #ffffff;
+  cursor: pointer;
   display: inline-flex;
   font-size: 0.88rem;
   font-weight: 900;
+  font-family: inherit;
   min-height: 2.65rem;
   padding: 0 0.95rem;
   text-decoration: none;
+}
+
+.category-pills button.is-active {
+  background: #c69e54;
+  color: #17191f;
+}
+
+.catalog-filter-panel {
+  align-items: end;
+  background: #f7fbf6;
+  border: 1px solid #edf0ea;
+  border-radius: 1.1rem;
+  display: grid;
+  gap: 0.9rem;
+  grid-template-columns: minmax(16rem, 1fr) minmax(14rem, 0.45fr);
+  margin-bottom: 1rem;
+  padding: 1rem;
+}
+
+.catalog-filter-panel label {
+  color: #4f5661;
+  display: grid;
+  font-size: 0.78rem;
+  font-weight: 950;
+  gap: 0.45rem;
+  text-transform: uppercase;
+}
+
+.catalog-filter-panel input,
+.catalog-filter-panel select {
+  background: #ffffff;
+  border: 1px solid rgba(32, 36, 47, 0.12);
+  border-radius: 0.9rem;
+  color: var(--ink);
+  font: inherit;
+  font-size: 0.95rem;
+  font-weight: 800;
+  min-height: 3rem;
+  outline: none;
+  padding: 0 0.9rem;
+  width: 100%;
+}
+
+.catalog-filter-panel input:focus,
+.catalog-filter-panel select:focus {
+  border-color: #c69e54;
+  box-shadow: 0 0 0 0.22rem rgba(198, 158, 84, 0.16);
+}
+
+.product-directory .category-pills {
+  justify-content: flex-start;
+  margin-bottom: 1.1rem;
+}
+
+.catalog-result-meta {
+  align-items: center;
+  color: #686c75;
+  display: flex;
+  font-size: 0.92rem;
+  font-weight: 850;
+  justify-content: space-between;
+  margin-bottom: 1rem;
+}
+
+.catalog-result-meta a {
+  color: var(--ink);
+  font-weight: 950;
+  text-decoration: none;
+}
+
+.catalog-empty-state {
+  background: #f7fbf6;
+  border: 1px solid #edf0ea;
+  border-radius: 1.1rem;
+  color: #4f5661;
+  padding: 1.4rem;
+}
+
+.catalog-empty-state h3 {
+  color: var(--ink);
+  font-size: 1.2rem;
+  margin: 0 0 0.35rem;
+}
+
+.catalog-empty-state p {
+  font-weight: 750;
+  line-height: 1.5;
+  margin: 0;
 }
 
 .directory-block {
@@ -6342,6 +6434,7 @@ img {
   .product-grid,
   .promo-stack,
   .panel-grid,
+  .catalog-filter-panel,
   .contact-band,
   .category-seo-intro,
   .category-page-grid {
@@ -7006,6 +7099,71 @@ img {
   box-shadow: none;
 }
 
+.admin-category-create {
+  align-items: end;
+  background: #ffffff;
+  border: 1px solid var(--admin-border);
+  border-radius: var(--admin-radius);
+  display: grid;
+  gap: 0.9rem;
+  grid-template-columns: minmax(13rem, 1fr) minmax(16rem, 1.2fr) auto;
+  padding: 1rem;
+}
+
+.admin-category-create div,
+.admin-category-create label {
+  display: grid;
+  gap: 0.35rem;
+}
+
+.admin-category-create strong {
+  color: var(--admin-text);
+  font-size: 0.98rem;
+}
+
+.admin-category-create span {
+  color: var(--admin-muted);
+  font-size: 0.82rem;
+  font-weight: 750;
+  line-height: 1.4;
+}
+
+.admin-category-create label {
+  color: #4a505a;
+  font-size: 0.72rem;
+  font-weight: 900;
+  text-transform: uppercase;
+}
+
+.admin-category-create input {
+  background: #ffffff;
+  border: 1px solid var(--admin-border-strong);
+  border-radius: var(--admin-radius);
+  color: var(--admin-text);
+  font: inherit;
+  min-height: 2.8rem;
+  outline: none;
+  padding: 0 0.85rem;
+}
+
+.admin-category-create input:focus {
+  border-color: var(--admin-gold);
+  box-shadow: 0 0 0 0.2rem rgba(198, 158, 84, 0.16);
+}
+
+.admin-category-create button {
+  background: var(--admin-text);
+  border: 0;
+  border-radius: var(--admin-radius);
+  color: #ffffff;
+  cursor: pointer;
+  font: inherit;
+  font-size: 0.84rem;
+  font-weight: 900;
+  min-height: 2.8rem;
+  padding: 0 1rem;
+}
+
 .admin-list-filters label,
 .admin-login-form label,
 .admin-form-grid label,
@@ -7238,6 +7396,7 @@ img {
   .dashboard-management-grid,
   .admin-stat-grid,
   .admin-catalog-controls .admin-stat-grid,
+  .admin-category-create,
   .admin-toolbar,
   .admin-catalog-controls .admin-toolbar,
   .admin-product-catalog-view,

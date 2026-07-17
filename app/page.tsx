@@ -6,7 +6,7 @@ import {
   homeVisualSeoImages,
 } from "./data/image-seo";
 import { getManagedSiteContent } from "./data/site-content";
-import { productCategories } from "./data/products";
+import { getProductCategories } from "./data/products";
 import {
   defaultOgImage,
   defaultSeoDescription,
@@ -43,6 +43,7 @@ export default async function Home() {
     getManagedProducts(),
     getManagedSiteContent(),
   ]);
+  const categories = getProductCategories(products);
 
   return (
     <>
@@ -60,7 +61,7 @@ export default async function Home() {
         type="application/ld+json"
       />
       <HomePageClient
-        categories={[...productCategories]}
+        categories={categories}
         products={products}
         siteContent={siteContent}
       />

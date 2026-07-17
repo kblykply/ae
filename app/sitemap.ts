@@ -7,7 +7,7 @@ import {
   getProductVisualSeoImages,
   homeVisualSeoImages,
 } from "./data/image-seo";
-import { productCategories } from "./data/products";
+import { getProductCategories } from "./data/products";
 import { seoLandingPages } from "./data/seo-landing-pages";
 import { absoluteUrl, defaultOgImage, siteUrl } from "./seo";
 
@@ -17,6 +17,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     getManagedBlogPosts(),
   ]);
   const now = new Date();
+  const productCategories = getProductCategories(products);
   const staticRoutes: MetadataRoute.Sitemap = [
     {
       changeFrequency: "weekly",

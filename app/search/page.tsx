@@ -4,7 +4,11 @@ import Link from "next/link";
 import { CatalogHeader } from "../components/catalog-header";
 import { SiteFooter } from "../components/site-footer";
 import { getManagedProducts } from "../data/catalog-store";
-import { productCategories, type Product, type ProductCategorySlug } from "../data/products";
+import {
+  getProductCategories,
+  type Product,
+  type ProductCategorySlug,
+} from "../data/products";
 import { defaultOgImage } from "../seo";
 
 type SearchPageProps = {
@@ -111,6 +115,7 @@ export default async function SearchPage({ searchParams }: SearchPageProps) {
   const category = getSingleParam(params.category) as ProductCategorySlug | "";
   const collection = getSingleParam(params.collection);
   const sort = getSingleParam(params.sort) || "relevance";
+  const catalogCategories = getProductCategories(products);
   const collectionOptions = Array.from(
     new Map(
       products.map((product) => [
@@ -123,7 +128,7 @@ export default async function SearchPage({ searchParams }: SearchPageProps) {
     ).values(),
   );
 
-  const activeCategory = productCategories.some(
+  const activeCategory = catalogCategories.some(
     (item) => item.slug === category,
   )
     ? category
@@ -208,7 +213,7 @@ export default async function SearchPage({ searchParams }: SearchPageProps) {
               name="category"
             >
               <option value="">Tüm kategoriler</option>
-              {productCategories.map((item) => (
+              {catalogCategories.map((item) => (
                 <option key={item.slug} value={item.slug}>
                   {item.label.tr}
                 </option>
